@@ -34,7 +34,7 @@ class Paper(models.Model):
     subject = models.ForeignKey("Subject", on_delete=models.CASCADE)
     exam_type = models.CharField(max_length=10, choices=EXAM_TYPE_CHOICES)
 
-    pdf = CloudinaryField(resource_type="raw")
+    pdf = CloudinaryField(resource_type="image")
 
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

@@ -30,7 +30,6 @@ def getpapers(request):
     }
 
     return Response(content)
-# Create your views here.
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
