@@ -6,7 +6,7 @@ const Home = () => {
 			id='Home'
 			className='w-full h-screen text-white grid place-items-center rounded-lg'
 		>
-			<div className='w-[95vw] h-[95vh] bg-blue-500 '>
+			<div className='w-[95vw] h-[95vh] bg-blue-500 home-img-div'>
 				<h1 className='text-[10vw] bg-[#C68C46] px-10 py-4 rounded-tr-3xl font-bold inline-block absolute bottom-0  '>
 					PYQ's
 				</h1>

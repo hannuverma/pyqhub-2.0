@@ -8,9 +8,18 @@ body{
 
 body, html{
   scroll-behavior: smooth;
+  
 
 }
-
+body::-webkit-scrollbar {
+  display: none;
+}
+.home-img-div{
+  background-image: url("./assets/homepage.png");
+  background-position: center;
+  background-size: cover;
+  border-radius: 80px;
+}
 .QP-div::-webkit-scrollbar {
   display: none;
 }

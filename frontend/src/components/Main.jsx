@@ -1,23 +1,16 @@
 import api from "../utils/api.js";
 import React, { useEffect, useState } from "react";
 
-const subjectOptions = [
-	{ id: 1, name: "health sports and safety" },
-	{ id: 2, name: "applied Science" },
-	{ id: 3, name: "FEE" },
-	{ id: 4, name: "analog electronics" },
-	{ id: 5, name: "environment studies" },
-	{ id: 6, name: "engineering mathematics - I" },
-];
-
 const Main = () => {
 	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 	const [semester, setSemester] = useState(1);
-	const [examination, setExamination] = useState("midsem");
-	const [subjects, setSubjects] = useState([]);
+	const [examination, setExamination] = useState("MIDSEM");
+	const [subjectOptions, setSubjectOptions] = useState([]);
+	const [selectedSubjects, setSelectedSubjects] = useState([]);
+	const [questionPapers, setQuestionPapers] = useState([])
 
 	const handleSubjectToggle = (subjectId) => {
-		setSubjects((prev) =>
+		setSelectedSubjects((prev) =>
 			prev.includes(subjectId)
 				? prev.filter((id) => id !== subjectId)
 				: [...prev, subjectId],
@@ -25,27 +18,40 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		// const questionPapers = api.post(
-		// 	"/question-papers",
-		// 	{
-		// 		semester,
-		// 		examination,
-		// 		subjects,
-		// 	},
-		// 	(response) => {
-		// 		console.log(response.data);
-		// 		return response.data;
-		// 	},
-		// );
-	}, [examination, subjects]);
+		const fetchQuestionPapers = async () => {
+			try {
+				const response = await api.post("/", {
+					semester,
+					exam: examination,
+					subject: selectedSubjects,
+				});
+				const sendData = {
+					semester,
+					exam: examination,
+					subject: selectedSubjects,
+				}
+				setQuestionPapers(response.data.papers ?? []);
+			} catch (error) {
+				console.error("Failed to fetch question papers", error);
+			}
+		};
+
+		fetchQuestionPapers();
+	}, [semester, examination, selectedSubjects]);
 
 	useEffect(() => {
-		// setSubjects(() => {
-		// 	api.get(`/semester=${semester}`).then((response) => {
-		// 		console.log(response.data);
-		// 		return response.data;
-		// 	});
-		// })
+		const fetchSubjects = async () => {
+			try {
+				const response = await api.post("/getsubjects/", { semester });
+				setSubjectOptions(response.data ?? []);
+				setSelectedSubjects([]);
+			} catch (error) {
+				console.error("Failed to fetch subjects", error);
+				setSubjectOptions([]);
+			}
+		};
+
+		fetchSubjects();
 	}, [semester]);
 
 	return (
@@ -93,9 +99,9 @@ const Main = () => {
 								<button
 									type='button'
 									// className='w-fit rounded-sm bg-[#efefef] px-2 py-1 leading-none text-[#cb8f46]'
-									onClick={() => setExamination("midsem")}
+									onClick={() => setExamination("MIDSEM")}
 									className={`leading-none  ${
-										examination === "midsem"
+										examination === "MIDSEM"
 											? "w-fit rounded-sm bg-[#efefef] px-2 py-1 text-[#cb8f46]"
 											: "bg-transparent px-2 py-1 text-[#f8f3ea]"
 									}`}
@@ -105,11 +111,11 @@ const Main = () => {
 								<button
 									type='button'
 									className={`leading-none ${
-										examination === "endsem"
+										examination === "ENDSEM"
 											? "w-fit rounded-sm bg-[#efefef] px-2 py-1 text-[#cb8f46]"
 											: "bg-transparent px-2 py-1 text-[#f8f3ea]"
 									}`}
-									onClick={() => setExamination("endsem")}
+									onClick={() => setExamination("ENDSEM")}
 								>
 									Endsem
 								</button>
@@ -121,7 +127,7 @@ const Main = () => {
 								Select Subject:
 							</h3>
 							<div className='space-y-2'>
-								{subjectOptions.map((subject) => (
+								{subjectOptions?.map((subject) => (
 									<label
 										key={subject.id}
 										className='flex items-center gap-3 text-[clamp(16px,1vw,22px)]'
@@ -129,11 +135,10 @@ const Main = () => {
 										<input
 											type='checkbox'
 											className='h-4 w-4 accent-[#f3ead7] outline-none'
-											checked={subjects.includes(subject.id)}
-											onChange={() => {
-												handleSubjectToggle(subject.id);
-												console.log(subjects);
-											}}
+											checked={selectedSubjects.includes(subject.id)}
+											onChange={() =>
+												handleSubjectToggle(subject.id)
+											}
 											aria-label={subject.name}
 										/>
 										<span className='leading-tight'>
@@ -151,16 +156,17 @@ const Main = () => {
 						</h2>
 
 						<div className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 max-h-[79vh] overflow-y-auto pr-2 QP-div'>
-							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((card) => (
-								<a href='#' key={card}>
+							{questionPapers?.map((card) => (
+								<a href={card.pdf} key={card.id} target='_blank' rel='noopener noreferrer'>
 									<div
 										className='mx-auto w-64 h-80 rounded-[20px] border-1
-										 border-[#f2ece2] bg-[#fcfbf9] shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative'
+										 border-[#f2ece2] shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative'
 									>
-										<div className='w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover absolute top-0 left-0 text-[#f8f3ea]'>
+										<div className='w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover absolute top-0 left-0 text-[#f8f3ea] z-20'>
 											{" "}
 											view full page
 										</div>
+										<img src={card.image} alt={card.name} className="w-full h-full z-10"/>
 									</div>
 								</a>
 							))}
