@@ -1,23 +1,52 @@
 import api from "../utils/api.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const subjects = [
-	"health sports and safety",
-	"applied Science",
-	"FEE",
-	"analog electronics",
-	"environment studies",
-	"engineering mathematics - I",
+const subjectOptions = [
+	{ id: 1, name: "health sports and safety" },
+	{ id: 2, name: "applied Science" },
+	{ id: 3, name: "FEE" },
+	{ id: 4, name: "analog electronics" },
+	{ id: 5, name: "environment studies" },
+	{ id: 6, name: "engineering mathematics - I" },
 ];
 
 const Main = () => {
 	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 	const [semester, setSemester] = useState(1);
 	const [examination, setExamination] = useState("midsem");
-    // const subjects = api.get(`/semester=${semester}`).then((response) => {
-    //     console.log(response.data);
-    //     return response.data;
-    // });
+	const [subjects, setSubjects] = useState([]);
+
+	const handleSubjectToggle = (subjectId) => {
+		setSubjects((prev) =>
+			prev.includes(subjectId)
+				? prev.filter((id) => id !== subjectId)
+				: [...prev, subjectId],
+		);
+	};
+
+	useEffect(() => {
+		// const questionPapers = api.post(
+		// 	"/question-papers",
+		// 	{
+		// 		semester,
+		// 		examination,
+		// 		subjects,
+		// 	},
+		// 	(response) => {
+		// 		console.log(response.data);
+		// 		return response.data;
+		// 	},
+		// );
+	}, [examination, subjects]);
+
+	useEffect(() => {
+		// setSubjects(() => {
+		// 	api.get(`/semester=${semester}`).then((response) => {
+		// 		console.log(response.data);
+		// 		return response.data;
+		// 	});
+		// })
+	}, [semester]);
 
 	return (
 		<div className='min-h-screen w-full pt-20'>
@@ -92,17 +121,24 @@ const Main = () => {
 								Select Subject:
 							</h3>
 							<div className='space-y-2'>
-								{subjects.map((subject) => (
+								{subjectOptions.map((subject) => (
 									<label
-										key={subject}
+										key={subject.id}
 										className='flex items-center gap-3 text-[clamp(16px,1vw,22px)]'
 									>
 										<input
 											type='checkbox'
 											className='h-4 w-4 accent-[#f3ead7] outline-none'
-											aria-label={subject}
+											checked={subjects.includes(subject.id)}
+											onChange={() => {
+												handleSubjectToggle(subject.id);
+												console.log(subjects);
+											}}
+											aria-label={subject.name}
 										/>
-										<span className='leading-tight'>{subject}</span>
+										<span className='leading-tight'>
+											{subject.name}
+										</span>
 									</label>
 								))}
 							</div>
@@ -116,13 +152,15 @@ const Main = () => {
 
 						<div className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 max-h-[79vh] overflow-y-auto pr-2 QP-div'>
 							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((card) => (
-								<a href='#'>
+								<a href='#' key={card}>
 									<div
-										key={card}
 										className='mx-auto w-64 h-80 rounded-[20px] border-1
-										 border-[#f2ece2] bg-[#fcfbf9] shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card'
+										 border-[#f2ece2] bg-[#fcfbf9] shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative'
 									>
-										<div className="w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover"> view full page</div>
+										<div className='w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover absolute top-0 left-0 text-[#f8f3ea]'>
+											{" "}
+											view full page
+										</div>
 									</div>
 								</a>
 							))}
