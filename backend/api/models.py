@@ -18,7 +18,7 @@ class Subject(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, related_name='subjects')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.semester.number}"
     
 class Paper(models.Model):
 
