@@ -1,5 +1,25 @@
 @import "tailwindcss";
-
+*{
+  box-sizing: border-box;
+}
 body{
   background-color: #C68C46;
+}
+
+body, html{
+  scroll-behavior: smooth;
+
+}
+
+.QP-div::-webkit-scrollbar {
+  display: none;
+}
+.QP-card:hover .QP-card-hover {
+  opacity: 1;
+  width: 100%;
+}
+.QP-card-hover {
+  opacity: 0;
+  transition: opacity 1s ease;
+  overflow: hidden;
 }
