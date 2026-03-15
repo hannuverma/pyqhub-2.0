@@ -159,14 +159,14 @@ const Main = () => {
 							{questionPapers?.map((card) => (
 								<a href={card.pdf} key={card.id} target='_blank' rel='noopener noreferrer'>
 									<div
-										className='mx-auto w-64 h-80 rounded-[20px] border-1
-										 border-[#f2ece2] shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative'
+										className='mx-auto w-70 h-90 rounded-[20px] border-1
+										 border-black shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative flex items-center justify-center overflow-hidden'
 									>
 										<div className='w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover absolute top-0 left-0 text-[#f8f3ea] z-20'>
 											{" "}
 											view full page
 										</div>
-										<img src={card.image} alt={card.name} className="w-full h-full z-10"/>
+										<img src={card.preview} alt={card.name} className="w-full h-full z-10 rounded-[20px] "/>
 									</div>
 								</a>
 							))}
