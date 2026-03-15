@@ -86,7 +86,7 @@ const Main = () => {
 									>
 										<input
 											type='checkbox'
-											className='h-[16px] w-[16px] accent-[#f3ead7]'
+											className='h-4 w-4 accent-[#f3ead7]'
 											aria-label={subject}
 										/>
 										<span className='leading-tight'>{subject}</span>
@@ -105,7 +105,7 @@ const Main = () => {
 							{[1, 2, 3, 4, 5, 6].map((card) => (
 								<div
 									key={card}
-									className='mx-auto w-[170px] rounded-[20px] border-[4px] border-[#f2ece2] bg-[#fcfbf9] p-2 shadow-[0_2px_0_rgba(255,255,255,0.35)] sm:w-[180px]'
+									className='mx-auto w-42.5 rounded-[20px] border-4 border-[#f2ece2] bg-[#fcfbf9] p-2 shadow-[0_2px_0_rgba(255,255,255,0.35)] sm:w-[180px]'
 								></div>
 							))}
 						</div>
