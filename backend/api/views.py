@@ -6,34 +6,37 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import SemesterSerializer, SubjectSerializer, PaperSerializer
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
-def getall(request):
+def getpapers(request):
 
     papers = Paper.objects.all()
 
-    semester = request.GET.get('semester')
-    exam_type = request.GET.get('exam')
-    subject = request.GET.getlist('subject')
-    subjects = Subject.objects.all()
+    semester = request.data.get('semester')
+    exam_type = request.data.get('exam')
+    subjects = request.data.get('subject')   # this should be a list
 
     if semester:
         papers = papers.filter(subject__semester__number=semester)
-        subjects = subjects.filter(semester__number=semester)
 
-    if subject:
-        papers = papers.filter(subject__id__in=subject)
+    if subjects:
+        papers = papers.filter(subject__id__in=subjects)
 
     if exam_type:
         papers = papers.filter(exam_type=exam_type)
 
-    
     content = {
         'papers': PaperSerializer(papers, many=True).data,
-        "subjects": SubjectSerializer(subjects, many=True).data,
-        'semesters': SemesterSerializer(Semester.objects.all(), many=True).data,
-        'selected_subjects': subject
     }
 
     return Response(content)
 # Create your views here.
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def getSubjects(request):
+    if request.method == 'POST':
+        semester_number = request.data.get('semester')
+        subjects = Subject.objects.filter(semester__number=semester_number)
+        serializer = SubjectSerializer(subjects, many=True)
+        return Response(serializer.data)
