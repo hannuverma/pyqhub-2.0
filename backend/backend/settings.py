@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-tdd6d#)srg548p7d&+sycud-2azgny(p9=ehr*gj2_kw)pifst"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -100,10 +100,16 @@ DATABASES = {
         'HOST': tmpPostgres.hostname,
         'PORT': 5432,
         'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+        'CONN_MAX_AGE': 600,
     }
 }
 
-
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
