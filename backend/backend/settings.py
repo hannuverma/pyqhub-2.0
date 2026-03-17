@@ -15,7 +15,6 @@ import os
 from urllib.parse import urlparse, parse_qsl
 from dotenv import load_dotenv
 
-from backend.api import admin
 load_dotenv()
 
 import cloudinary
