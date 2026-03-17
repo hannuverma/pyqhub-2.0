@@ -15,12 +15,66 @@ const Main = () => {
 	const [selectedSubjects, setSelectedSubjects] = useState([]);
 	const [questionPapers, setQuestionPapers] = useState([]);
 	const mainRef = React.useRef(null);
+	const qpScrollRef = React.useRef(null);
 
 	useEffect(() => {
 		const scroll = new LocomotiveScroll();
 
 		return () => {
 			scroll.destroy();
+		};
+	}, []);
+
+	useEffect(() => {
+		const panel = qpScrollRef.current;
+		if (!panel) return;
+
+		let touchStartY = 0;
+
+		const canScrollPanel = () => panel.scrollHeight > panel.clientHeight;
+
+		const onWheelCapture = (event) => {
+			if (!panel.contains(event.target) || !canScrollPanel()) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+			panel.scrollTop += event.deltaY;
+		};
+
+		const onTouchStartCapture = (event) => {
+			if (!panel.contains(event.target)) return;
+			touchStartY = event.touches[0]?.clientY ?? 0;
+		};
+
+		const onTouchMoveCapture = (event) => {
+			if (!panel.contains(event.target) || !canScrollPanel()) return;
+
+			const currentY = event.touches[0]?.clientY ?? touchStartY;
+			const delta = touchStartY - currentY;
+			touchStartY = currentY;
+
+			event.preventDefault();
+			event.stopPropagation();
+			panel.scrollTop += delta;
+		};
+
+		window.addEventListener("wheel", onWheelCapture, {
+			passive: false,
+			capture: true,
+		});
+		window.addEventListener("touchstart", onTouchStartCapture, {
+			passive: true,
+			capture: true,
+		});
+		window.addEventListener("touchmove", onTouchMoveCapture, {
+			passive: false,
+			capture: true,
+		});
+
+		return () => {
+			window.removeEventListener("wheel", onWheelCapture, true);
+			window.removeEventListener("touchstart", onTouchStartCapture, true);
+			window.removeEventListener("touchmove", onTouchMoveCapture, true);
 		};
 	}, []);
 
@@ -237,7 +291,10 @@ const Main = () => {
 							HERE ARE YOUR PAPERS :
 						</h2>
 
-						<div className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 max-h-[79vh] overflow-y-auto pr-2 QP-div'>
+						<div
+							ref={qpScrollRef}
+							className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 h-[79vh] overflow-y-auto overflow-x-hidden overscroll-y-contain pr-2 QP-div'
+						>
 							{questionPapers?.map((card) => (
 								<a
 									href={card.pdf}
