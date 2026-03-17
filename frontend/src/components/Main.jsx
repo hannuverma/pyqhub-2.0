@@ -1,6 +1,5 @@
 import api from "../utils/api.js";
 import React, { useEffect, useState } from "react";
-import LocomotiveScroll from "locomotive-scroll";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,68 +14,6 @@ const Main = () => {
 	const [selectedSubjects, setSelectedSubjects] = useState([]);
 	const [questionPapers, setQuestionPapers] = useState([]);
 	const mainRef = React.useRef(null);
-	const qpScrollRef = React.useRef(null);
-
-	useEffect(() => {
-		const scroll = new LocomotiveScroll();
-
-		return () => {
-			scroll.destroy();
-		};
-	}, []);
-
-	useEffect(() => {
-		const panel = qpScrollRef.current;
-		if (!panel) return;
-
-		let touchStartY = 0;
-
-		const canScrollPanel = () => panel.scrollHeight > panel.clientHeight;
-
-		const onWheelCapture = (event) => {
-			if (!panel.contains(event.target) || !canScrollPanel()) return;
-
-			event.preventDefault();
-			event.stopPropagation();
-			panel.scrollTop += event.deltaY;
-		};
-
-		const onTouchStartCapture = (event) => {
-			if (!panel.contains(event.target)) return;
-			touchStartY = event.touches[0]?.clientY ?? 0;
-		};
-
-		const onTouchMoveCapture = (event) => {
-			if (!panel.contains(event.target) || !canScrollPanel()) return;
-
-			const currentY = event.touches[0]?.clientY ?? touchStartY;
-			const delta = touchStartY - currentY;
-			touchStartY = currentY;
-
-			event.preventDefault();
-			event.stopPropagation();
-			panel.scrollTop += delta;
-		};
-
-		window.addEventListener("wheel", onWheelCapture, {
-			passive: false,
-			capture: true,
-		});
-		window.addEventListener("touchstart", onTouchStartCapture, {
-			passive: true,
-			capture: true,
-		});
-		window.addEventListener("touchmove", onTouchMoveCapture, {
-			passive: false,
-			capture: true,
-		});
-
-		return () => {
-			window.removeEventListener("wheel", onWheelCapture, true);
-			window.removeEventListener("touchstart", onTouchStartCapture, true);
-			window.removeEventListener("touchmove", onTouchMoveCapture, true);
-		};
-	}, []);
 
 	useGSAP(
 		() => {
@@ -185,20 +122,12 @@ const Main = () => {
 	return (
 		<div className='min-h-screen w-full pt-20' id='Main' ref={mainRef}>
 			<div className='mx-auto w-full border-[3px]border-[#1f1f1f] text-[#fffdf8]'>
-				<div
-					className='px-4 pb-10 text-center text-[clamp(20px,3vw,39px)] font-semibold leading-tight '
-					data-scroll
-					data-scroll-speed='0.1'
-				>
+				<div className='px-4 pb-10 text-center text-[clamp(20px,3vw,39px)] font-semibold leading-tight '>
 					Download and practice previous year question papers for better
 					exam preparation.
 				</div>
 
-				<div
-					className='bg-[#efefef] px-4 py-2 text-center text-[clamp(18px,2.1vw,36px)] font-semibold text-[#1d1d1d] '
-					data-scroll
-					data-scroll-speed='0.03'
-				>
+				<div className='bg-[#efefef] px-4 py-2 text-center text-[clamp(18px,2.1vw,36px)] font-semibold text-[#1d1d1d] '>
 					year 2025- 26 papers are updated!
 				</div>
 
@@ -291,10 +220,7 @@ const Main = () => {
 							HERE ARE YOUR PAPERS :
 						</h2>
 
-						<div
-							ref={qpScrollRef}
-							className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 h-[79vh] overflow-y-auto overflow-x-hidden overscroll-y-contain pr-2 QP-div'
-						>
+						<div className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 h-[79vh] overflow-y-auto overflow-x-hidden overscroll-y-contain pr-2 QP-div'>
 							{questionPapers?.map((card) => (
 								<a
 									href={card.pdf}
