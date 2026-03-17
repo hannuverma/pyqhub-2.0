@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from urllib.parse import urlparse, parse_qsl
 from dotenv import load_dotenv
+
+from backend.api import admin
 load_dotenv()
 
 import cloudinary
@@ -33,6 +35,8 @@ DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 
+
+    
 # Application definition
 
 INSTALLED_APPS = [
