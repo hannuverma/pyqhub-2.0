@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from urllib.parse import urlparse, parse_qsl
 from dotenv import load_dotenv
+
 load_dotenv()
 
 import cloudinary
@@ -33,6 +34,8 @@ DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 
+
+    
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +47,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'api'
+    'api',
+    "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -176,3 +181,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
+DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE", "cloudinary_storage.storage.MediaCloudinaryStorage")

@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import admin
 from django.urls import path
 from . import views
@@ -10,3 +12,5 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+if os.environ.get("ENV") != "production":
+    urlpatterns += [path('admin/', admin.site.urls)]
