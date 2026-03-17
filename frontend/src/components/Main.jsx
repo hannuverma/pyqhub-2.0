@@ -1,5 +1,11 @@
 import api from "../utils/api.js";
 import React, { useEffect, useState } from "react";
+import LocomotiveScroll from "locomotive-scroll";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Main = () => {
 	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
@@ -7,7 +13,74 @@ const Main = () => {
 	const [examination, setExamination] = useState("MIDSEM");
 	const [subjectOptions, setSubjectOptions] = useState([]);
 	const [selectedSubjects, setSelectedSubjects] = useState([]);
-	const [questionPapers, setQuestionPapers] = useState([])
+	const [questionPapers, setQuestionPapers] = useState([]);
+	const mainRef = React.useRef(null);
+
+	useEffect(() => {
+		const scroll = new LocomotiveScroll();
+
+		return () => {
+			scroll.destroy();
+		};
+	}, []);
+
+	useGSAP(
+		() => {
+			const tl = gsap.timeline({
+				scrollTrigger: {
+					trigger: mainRef.current,
+					start: "top 40%",
+					end: "bottom 20%",
+				},
+			});
+
+			tl.from(".heading-text", {
+				y: 150,
+				opacity: 0,
+				duration: 1,
+				ease: "power2.out",
+			}).from(
+				".side_div",
+				{
+					y: 130,
+					opacity: 0,
+					duration: 1,
+					ease: "power2.out",
+				},
+				["-=0.1"],
+			);
+		},
+		{ scope: mainRef },
+	);
+
+	useGSAP(
+		() => {
+			const cards = gsap.utils.toArray(".QP-card", mainRef.current);
+			if (!cards.length) return;
+
+			const rafId = requestAnimationFrame(() => {
+				gsap.killTweensOf(cards);
+				gsap.set(cards, { x: 30, autoAlpha: 0 });
+				gsap.to(cards, {
+					x: 0,
+					autoAlpha: 1,
+					duration: 0.9,
+					stagger: 0.2,
+					ease: "power2.out",
+					overwrite: "auto",
+					delay: 0.5,
+					scrollTrigger: {
+						trigger: mainRef.current,
+						start: "top 40%",
+						end: "bottom 20%",
+					},
+				});
+			});
+
+			return () => cancelAnimationFrame(rafId);
+		},
+		{ scope: mainRef, dependencies: [questionPapers] },
+	);
 
 	const handleSubjectToggle = (subjectId) => {
 		setSelectedSubjects((prev) =>
@@ -29,8 +102,9 @@ const Main = () => {
 					semester,
 					exam: examination,
 					subject: selectedSubjects,
-				}
+				};
 				setQuestionPapers(response.data.papers ?? []);
+				console.log(questionPapers);
 			} catch (error) {
 				console.error("Failed to fetch question papers", error);
 			}
@@ -55,21 +129,29 @@ const Main = () => {
 	}, [semester]);
 
 	return (
-		<div className='min-h-screen w-full pt-20'>
+		<div className='min-h-screen w-full pt-20' id='Main' ref={mainRef}>
 			<div className='mx-auto w-full border-[3px]border-[#1f1f1f] text-[#fffdf8]'>
-				<div className='px-4 pb-10 text-center text-[clamp(20px,3vw,39px)] font-semibold leading-tight'>
+				<div
+					className='px-4 pb-10 text-center text-[clamp(20px,3vw,39px)] font-semibold leading-tight '
+					data-scroll
+					data-scroll-speed='0.1'
+				>
 					Download and practice previous year question papers for better
 					exam preparation.
 				</div>
 
-				<div className='bg-[#efefef] px-4 py-2 text-center text-[clamp(18px,2.1vw,36px)] font-semibold text-[#1d1d1d]'>
+				<div
+					className='bg-[#efefef] px-4 py-2 text-center text-[clamp(18px,2.1vw,36px)] font-semibold text-[#1d1d1d] '
+					data-scroll
+					data-scroll-speed='0.03'
+				>
 					year 2025- 26 papers are updated!
 				</div>
 
 				<div className='grid min-h-160 grid-cols-1 lg:grid-cols-[280px_1fr] relative '>
-					<div className='border-r-[3px] border-[#e9ddc9] px-4 pt-4 pb-6 static top-0 left-0'>
+					<div className='border-r-[3px] border-[#e9ddc9] px-4 pt-4 pb-6 static top-0 left-0 side_div'>
 						<div className='mb-8'>
-							<h3 className='mb-3 text-[clamp(20px,1.5vw,28px)] font-semibold'>
+							<h3 className='mb-3 text-[clamp(20px,1.5vw,28px)] font-semibold '>
 								Select Your semester :
 							</h3>
 							<div className='grid grid-cols-4 gap-x-4 gap-y-3 text-[clamp(22px,1.25vw,27px)] font-medium'>
@@ -151,22 +233,31 @@ const Main = () => {
 					</div>
 
 					<section className='px-4 pt-2 pb-8 sm:px-6'>
-						<h2 className='mb-4 text-[clamp(36px,2.4vw,49px)] font-semibold tracking-wide'>
+						<h2 className='mb-4 text-[clamp(36px,2.4vw,49px)] font-semibold tracking-wide heading-text'>
 							HERE ARE YOUR PAPERS :
 						</h2>
 
 						<div className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12 xl:gap-x-16 max-h-[79vh] overflow-y-auto pr-2 QP-div'>
 							{questionPapers?.map((card) => (
-								<a href={card.pdf} key={card.id} target='_blank' rel='noopener noreferrer'>
+								<a
+									href={card.pdf}
+									key={card.id}
+									target='_blank'
+									rel='noopener noreferrer'
+								>
 									<div
-										className='mx-auto w-70 h-90 rounded-[20px] border-1
+										className='mx-auto w-70 h-90 rounded-[20px] border
 										 border-black shadow-[0_2px_0_rgba(255,255,255,0.35)] QP-card relative flex items-center justify-center overflow-hidden'
 									>
 										<div className='w-0 h-full bg-black/80 rounded-[20px] grid place-content-center text-sm underline QP-card-hover absolute top-0 left-0 text-[#f8f3ea] z-20'>
 											{" "}
 											view full page
 										</div>
-										<img src={card.preview} alt={card.name} className="w-full h-full z-10 rounded-[20px] "/>
+										<img
+											src={card.preview}
+											alt={card.name}
+											className='w-full h-full z-10 rounded-[20px] '
+										/>
 									</div>
 								</a>
 							))}
