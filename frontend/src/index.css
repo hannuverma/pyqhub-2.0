@@ -1,35 +1,39 @@
 @import "tailwindcss";
-@import 'locomotive-scroll/dist/locomotive-scroll.css';
-*{
-  box-sizing: border-box;
+@import "locomotive-scroll/dist/locomotive-scroll.css";
+* {
+	box-sizing: border-box;
 }
-body{
-  background-color: #C68C46;
+body {
+	background-color: #c68c46;
 }
 
-body, html{
-  scroll-behavior: smooth;
-  
-
+body,
+html {
+	scroll-behavior: smooth;
 }
 body::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
-.home-img-div{
-  background-image: url("./assets/homepage.png");
-  background-position: center;
-  background-size: cover;
-  border-radius: 80px;
+.home-img-div {
+	background-image: url("./assets/homepage.png");
+	background-position: center;
+	background-size: cover;
+	border-radius: 80px;
+}
+.QP-div {
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior-y: contain;
 }
 .QP-div::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 .QP-card:hover .QP-card-hover {
-  opacity: 1;
-  width: 100%;
+	opacity: 1;
+	width: 100%;
 }
 .QP-card-hover {
-  opacity: 0;
-  transition: opacity 1s ease;
-  overflow: hidden;
+	opacity: 0;
+	transition: opacity 1s ease;
+	overflow: hidden;
 }
