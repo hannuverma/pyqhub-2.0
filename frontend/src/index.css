@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import 'locomotive-scroll/dist/locomotive-scroll.css';
 *{
   box-sizing: border-box;
 }
