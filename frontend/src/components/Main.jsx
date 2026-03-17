@@ -242,6 +242,12 @@ const Main = () => {
 											className='w-full h-full z-10 rounded-[20px] '
 										/>
 									</div>
+									<h1 className='text-lg font-bold text-center mt-2'>
+										{card.subject.name}
+									</h1>
+									<h2 className='text-md font-medium text-center text-[#f8f3ea]'>
+										{card.year} {card.exam_type}
+									</h2>
 								</a>
 							))}
 						</div>
