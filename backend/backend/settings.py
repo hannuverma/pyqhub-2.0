@@ -15,26 +15,21 @@ import os
 from urllib.parse import urlparse, parse_qsl
 from dotenv import load_dotenv
 
-load_dotenv()
 
 import cloudinary
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-tdd6d#)srg548p7d&+sycud-2azgny(p9=ehr*gj2_kw)pifst"
+SECRET_KEY =  os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = ["*"]
-
-
-
     
 # Application definition
 
@@ -97,7 +92,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 #     }
 # }
 
-tmpPostgres = urlparse("postgresql://neondb_owner:npg_AzvNpQg8IFE6@ep-ancient-heart-a1yx1h8k-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
 DATABASES = {
     'default': {
@@ -165,9 +160,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dwe6n6goq',
-    'API_KEY': '786111112512728',
-    'API_SECRET': '6G9GDXuSX_11dpt5mHHK9HWnBjI',
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME') ,
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
 cloudinary.config(
