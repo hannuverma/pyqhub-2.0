@@ -552,13 +552,20 @@ a {
 	padding: 8px 12px;
 	border-radius: 999px;
 	border: 1px solid #cfd1ff;
-	background: #eff0ff;
-	color: #2f35b5;
+	background: #fb6767;
+	color: #ffffff;
 	font-size: 0.82rem;
 	font-weight: 700;
 	white-space: nowrap;
 }
-
+.preview-badge button{
+	border: none;
+	background: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	text-transform: uppercase;
+}
 .preview-badge.secure {
 	background: #eaf8f0;
 	border-color: #b3e1c6;
