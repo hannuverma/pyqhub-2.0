@@ -6,7 +6,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../utils/constants";
 const UploadLoginPage = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,7 +30,7 @@ const UploadLoginPage = () => {
 
 		try {
 			const response = await apiClient.post("/api/token/", {
-				username,
+				email,
 				password,
 			});
 
@@ -38,7 +38,7 @@ const UploadLoginPage = () => {
 			localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
 			navigate(redirectPath, { replace: true });
 		} catch {
-			setError("Invalid username or password.");
+			setError("Invalid email or password.");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -52,13 +52,13 @@ const UploadLoginPage = () => {
 
 				<form className='login-form' onSubmit={handleSubmit}>
 					<label>
-						<span>Username</span>
+						<span>Email</span>
 						<input
-							type='text'
-							name='username'
-							autoComplete='username'
-							value={username}
-							onChange={(event) => setUsername(event.target.value)}
+							type='email'
+							name='email'
+							autoComplete='email'
+							value={email}
+							onChange={(event) => setEmail(event.target.value)}
 							required
 						/>
 					</label>
