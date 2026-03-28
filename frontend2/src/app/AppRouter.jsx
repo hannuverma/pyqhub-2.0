@@ -3,6 +3,7 @@ import AppLayout from "../components/layout/AppLayout";
 import HomePage from "../pages/HomePage";
 import PapersPage from "../pages/PapersPage";
 import UploadSectorPage from "../pages/UploadSectorPage";
+import UploadLoginPage from "../pages/UploadLoginPage";
 import ProtectedRoute from "../utils/ProtectedRoutes";
 
 const AppRouter = () => {
@@ -12,6 +13,7 @@ const AppRouter = () => {
 				<Route element={<AppLayout />}>
 					<Route index element={<HomePage />} />
 					<Route path='papers' element={<PapersPage />} />
+					<Route path='upload/login' element={<UploadLoginPage />} />
 					<Route
 						path='upload'
 						element={
