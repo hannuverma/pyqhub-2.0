@@ -1,4 +1,4 @@
-const UploadPanel = () => {
+const UploadPanel = ({logoutHandler}) => {
 	return (
 		<section className='upload-page'>
 			<div className='upload-shell'>
@@ -12,7 +12,9 @@ const UploadPanel = () => {
 							structure.
 						</p>
 					</div>
-					<span className='preview-badge'>Public Route</span>
+					<span className='preview-badge'>
+						<button onClick={logoutHandler}>logout</button>
+					</span>
 				</div>
 
 				<div className='upload-grid'>

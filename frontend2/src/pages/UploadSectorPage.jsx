@@ -1,7 +1,15 @@
 import UploadPanel from "../components/upload/UploadPanel";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../utils/constants";
 
 const UploadSectorPage = () => {
-	return <UploadPanel />;
+	const logoutHandler = () => {
+		localStorage.removeItem(ACCESS_TOKEN);
+		localStorage.removeItem(REFRESH_TOKEN);
+		localStorage.removeItem("userProfile");
+		window.location.href = "/upload/login";
+	};
+
+	return <UploadPanel logoutHandler = {logoutHandler} />;
 };
 
 export default UploadSectorPage;
