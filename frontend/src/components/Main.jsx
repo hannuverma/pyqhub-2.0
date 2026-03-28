@@ -8,7 +8,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Main = () => {
 	const semesters = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
-	const [semester, setSemester] = useState(1);
+	const [semester, setSemester] = useState(2);
 	const [examination, setExamination] = useState("MIDSEM");
 	const [subjectOptions, setSubjectOptions] = useState([]);
 	const [selectedSubjects, setSelectedSubjects] = useState([]);

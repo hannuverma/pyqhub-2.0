@@ -1,0 +1,51 @@
+export const mockPapers = [];
+// export const mockPapers = [
+// 	{
+// 		id: 1,
+// 		title: "Design and Analysis of Algorithms",
+// 		semester: 5,
+// 		year: 2023,
+// 		examType: "End Sem",
+// 		pdf: "#",
+// 	},
+// 	{
+// 		id: 2,
+// 		title: "Database Management Systems",
+// 		semester: 4,
+// 		year: 2022,
+// 		examType: "Regular",
+// 		pdf: "#",
+// 	},
+// 	{
+// 		id: 3,
+// 		title: "Microprocessors and Interfaces",
+// 		semester: 8,
+// 		year: 2024,
+// 		examType: "Supplementary",
+// 		pdf: "#",
+// 	},
+// 	{
+// 		id: 4,
+// 		title: "Discrete Mathematics",
+// 		semester: 3,
+// 		year: 2023,
+// 		examType: "End Sem",
+// 		pdf: "#",
+// 	},
+// 	{
+// 		id: 5,
+// 		title: "Cyber Security and Law",
+// 		semester: 7,
+// 		year: 2021,
+// 		examType: "Mid Sem",
+// 		pdf: "#",
+// 	},
+// 	{
+// 		id: 6,
+// 		title: "Web Technologies",
+// 		semester: 5,
+// 		year: 2023,
+// 		examType: "End Sem",
+// 		pdf: "#",
+// 	},
+// ];
