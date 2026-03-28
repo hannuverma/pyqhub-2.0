@@ -5,7 +5,17 @@ from django.core.validators import FileExtensionValidator
 from pdf2image import convert_from_path
 from django.core.files.base import ContentFile
 from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import AbstractUser
 
+
+class User(AbstractUser):
+    username = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]  
+
+    def __str__(self):
+        return self.username
 
 class Semester(models.Model):
     number = models.IntegerField(unique=True)
