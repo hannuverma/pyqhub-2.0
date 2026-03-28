@@ -49,7 +49,7 @@ def getSubjects(request):
     if cached_subjects:
         return Response(cached_subjects)
 
-    subjects = Subject.objects.filter(semester=semester)
+    subjects = Subject.objects.filter(semester__number=semester)
     data = [{"id": s.id, "name": s.name} for s in subjects]
 
     cache.set(cache_key, data, 60 * 60 * 24)
