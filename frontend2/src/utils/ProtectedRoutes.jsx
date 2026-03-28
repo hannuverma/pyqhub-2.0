@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../services/apiClient.js";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "./constants.js";
@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 
 function ProtectedRoute({ children }) {
 	const [isAuthorized, setIsAuthorized] = useState(null);
+	const location = useLocation();
 
 	useEffect(() => {
 		auth().catch(() => setIsAuthorized(false));
@@ -50,7 +51,11 @@ function ProtectedRoute({ children }) {
 		return <div>Loading...</div>;
 	}
 
-	return isAuthorized ? children : <Navigate to='/' />;
+	return isAuthorized ? (
+		children
+	) : (
+		<Navigate to='/upload/login' state={{ from: location }} replace />
+	);
 }
 
 export default ProtectedRoute;
