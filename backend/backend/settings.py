@@ -33,6 +33,8 @@ ALLOWED_HOSTS = ["*"]
     
 # Application definition
 
+print("DB URL:", os.environ.get("DATABASE_URL"))
+
 INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
