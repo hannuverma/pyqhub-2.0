@@ -1,9 +1,6 @@
 .env
-node_modules/
 *.pyc
 __pycache__/
-*.pyo
-*.pyd
 db.sqlite3
 *.db
 media/
@@ -11,8 +8,12 @@ staticfiles/
 .venv/
 venv/
 env/
-*.egg-info/
+node_modules/
 dist/
-build/
-.pytest_cache/
-.mypy_cache/
+dist-ssr/
+*.local
+*.log
+.DS_Store
+.idea/
+*.suo
+*.sw?

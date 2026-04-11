@@ -1,4 +1,5 @@
 import io
+import os
 
 from django.db import models
 from django.core.validators import FileExtensionValidator
@@ -40,9 +41,20 @@ class Paper(models.Model):
         (ENDSEM, 'Endsem'),
     ]
 
+    IT = 'IT'
+    DSA = 'DSA'
+    CSE = 'CSE'
+
+    BATCH_CHOICES = [
+        (IT, 'IT'),
+        (DSA, 'DSA'),
+        (CSE, 'CSE'),
+    ]
+
     year = models.IntegerField()
     subject = models.ForeignKey("Subject", on_delete=models.CASCADE)
     exam_type = models.CharField(max_length=10, choices=EXAM_TYPE_CHOICES)
+    batch = models.CharField(max_length=10, choices=BATCH_CHOICES, default='IT')
 
     pdf = CloudinaryField(resource_type="image")
 
@@ -50,7 +62,8 @@ class Paper(models.Model):
 
     @property
     def preview_url(self):
-        return f"https://res.cloudinary.com/dwe6n6goq/image/upload/pg_1/{self.pdf.public_id}.jpg"
+        cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "")
+        return f"https://res.cloudinary.com/{cloud_name}/image/upload/pg_1/{self.pdf.public_id}.jpg"
     
     def __str__(self):
         return f"{self.subject.name} - {self.get_exam_type_display()} {self.year}"

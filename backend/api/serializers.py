@@ -1,3 +1,4 @@
+import os
 from rest_framework import serializers
 from .models import Semester, Subject, Paper
 
@@ -22,8 +23,9 @@ class PaperSerializer(serializers.ModelSerializer):
         return obj.pdf.url
 
     def get_preview(self, obj):
-        return f"https://res.cloudinary.com/dwe6n6goq/image/upload/pg_1/{obj.pdf.public_id}.jpg"
+        cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "")
+        return f"https://res.cloudinary.com/{cloud_name}/image/upload/pg_1/{obj.pdf.public_id}.jpg"
 
     class Meta:
         model = Paper
-        fields = ['id', 'year', 'exam_type', 'pdf', 'preview', 'uploaded_at', 'subject']
+        fields = ['id', 'year', 'exam_type', 'batch', 'pdf', 'preview', 'uploaded_at', 'subject']
