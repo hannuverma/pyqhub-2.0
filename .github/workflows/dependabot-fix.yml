@@ -28,10 +28,9 @@ jobs:
         # We use --package-lock-only or just install for the root to get Prettier
         run: npm install
 
-      - name: Fix Linting and Formatting
-        run: |
-          npx eslint --fix .
-          npx prettier --write .
+      - name: Fix Formatting
+        # This runs prettier on the whole monorepo
+        run: npx prettier --write .
 
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
