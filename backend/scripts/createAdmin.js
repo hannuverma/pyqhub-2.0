@@ -1,7 +1,7 @@
-require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
-const bcrypt = require("bcryptjs");
-const { PrismaClient } = require("@prisma/client");
-const readline = require("readline");
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
+const bcrypt = require('bcryptjs');
+const { PrismaClient } = require('@prisma/client');
+const readline = require('readline');
 
 const prisma = new PrismaClient();
 
@@ -15,9 +15,9 @@ function ask(question) {
 }
 
 async function main() {
-  const username = await ask("Username: ");
-  const email = await ask("Email: ");
-  const password = await ask("Password: ");
+  const username = await ask('Username: ');
+  const email = await ask('Email: ');
+  const password = await ask('Password: ');
   rl.close();
 
   const hash = await bcrypt.hash(password, 10);

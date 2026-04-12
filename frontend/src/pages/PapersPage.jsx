@@ -1,17 +1,21 @@
-import { useMemo, useState } from "react";
-import FilterSidebar from "../components/papers/FilterSidebar";
-import PapersGrid from "../components/papers/PapersGrid";
-import { usePapers } from "../hooks/usePapers";
+import { useMemo, useState } from 'react';
+import FilterSidebar from '../components/papers/FilterSidebar';
+import PapersGrid from '../components/papers/PapersGrid';
+import { usePapers } from '../hooks/usePapers';
 
 const PAGE_SIZE = 6;
 
 const PapersPage = () => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const {
-    semester, setSemester,
-    exam, setExam,
-    year, setYear,
-    batch, setBatch,
+    semester,
+    setSemester,
+    exam,
+    setExam,
+    year,
+    setYear,
+    batch,
+    setBatch,
     filteredPapers,
     loading,
     clearAllFilters,
@@ -33,13 +37,25 @@ const PapersPage = () => {
     <section className="papers-page">
       <FilterSidebar
         semester={semester}
-        onSemesterChange={(v) => { setSemester(v); reset(); }}
+        onSemesterChange={(v) => {
+          setSemester(v);
+          reset();
+        }}
         exam={exam}
-        onExamChange={(v) => { setExam(v); reset(); }}
+        onExamChange={(v) => {
+          setExam(v);
+          reset();
+        }}
         year={year}
-        onYearChange={(v) => { setYear(v); reset(); }}
+        onYearChange={(v) => {
+          setYear(v);
+          reset();
+        }}
         batch={batch}
-        onBatchChange={(v) => { setBatch(v); reset(); }}
+        onBatchChange={(v) => {
+          setBatch(v);
+          reset();
+        }}
         onClear={handleClear}
       />
 

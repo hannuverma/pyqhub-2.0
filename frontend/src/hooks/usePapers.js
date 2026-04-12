@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getPapers } from "../services/papersService";
+import { useEffect, useState } from 'react';
+import { getPapers } from '../services/papersService';
 
 export const usePapers = () => {
   const [semester, setSemester] = useState(1);
@@ -22,7 +22,9 @@ export const usePapers = () => {
     };
 
     loadPapers();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, [semester, exam, year, batch]);
 
   const clearAllFilters = () => {
@@ -33,10 +35,14 @@ export const usePapers = () => {
   };
 
   return {
-    semester, setSemester,
-    exam, setExam,
-    year, setYear,
-    batch, setBatch,
+    semester,
+    setSemester,
+    exam,
+    setExam,
+    year,
+    setYear,
+    batch,
+    setBatch,
     filteredPapers: papers,
     loading,
     clearAllFilters,

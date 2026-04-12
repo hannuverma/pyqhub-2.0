@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import apiClient from "../../services/apiClient";
+import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import apiClient from '../../services/apiClient';
 
 const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8];
 const EXAM_TYPES = [
-  { value: "MIDSEM", label: "Mid Sem" },
-  { value: "ENDSEM", label: "End Sem" },
+  { value: 'MIDSEM', label: 'Mid Sem' },
+  { value: 'ENDSEM', label: 'End Sem' },
 ];
-const BATCHES = ["IT", "DSA", "CSE"];
+const BATCHES = ['IT', 'DSA', 'CSE'];
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from(
   { length: currentYear - 2022 },
@@ -15,11 +15,11 @@ const YEARS = Array.from(
 ).reverse();
 
 const EMPTY_FORM = {
-  title: "",
-  semester: "1",
+  title: '',
+  semester: '1',
   year: String(currentYear),
-  examType: "MIDSEM",
-  batch: "IT",
+  examType: 'MIDSEM',
+  batch: 'IT',
 };
 
 const UploadPanel = ({ logoutHandler }) => {
@@ -30,8 +30,8 @@ const UploadPanel = ({ logoutHandler }) => {
   const [editingId, setEditingId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const fileRef = useRef(null);
 
   useEffect(() => {
@@ -41,10 +41,10 @@ const UploadPanel = ({ logoutHandler }) => {
   async function loadPapers() {
     setLoadingPapers(true);
     try {
-      const res = await apiClient.get("/upload/papers");
+      const res = await apiClient.get('/upload/papers');
       setPapers(res.data);
     } catch {
-      setError("Failed to load papers.");
+      setError('Failed to load papers.');
     }
     setLoadingPapers(false);
   }
@@ -67,26 +67,26 @@ const UploadPanel = ({ logoutHandler }) => {
       batch: paper.batch,
     });
     setFile(null);
-    setError("");
-    setSuccess("");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setError('');
+    setSuccess('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function cancelEdit() {
     setEditingId(null);
     setForm(EMPTY_FORM);
     setFile(null);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     if (!editingId && !file) {
-      setError("Please select a PDF file.");
+      setError('Please select a PDF file.');
       return;
     }
 
@@ -94,34 +94,34 @@ const UploadPanel = ({ logoutHandler }) => {
     try {
       if (editingId) {
         await apiClient.patch(`/upload/papers/${editingId}`, form);
-        setSuccess("Paper updated successfully.");
+        setSuccess('Paper updated successfully.');
         setEditingId(null);
         setForm(EMPTY_FORM);
       } else {
         const data = new FormData();
         Object.entries(form).forEach(([k, v]) => data.append(k, v));
-        data.append("pdf", file);
-        await apiClient.post("/upload", data);
-        setSuccess("Paper uploaded successfully.");
+        data.append('pdf', file);
+        await apiClient.post('/upload', data);
+        setSuccess('Paper uploaded successfully.');
         setForm(EMPTY_FORM);
         setFile(null);
-        if (fileRef.current) fileRef.current.value = "";
+        if (fileRef.current) fileRef.current.value = '';
       }
       await loadPapers();
     } catch (err) {
-      setError(err.response?.data?.error || "Something went wrong.");
+      setError(err.response?.data?.error || 'Something went wrong.');
     }
     setSubmitting(false);
   }
 
   async function handleDelete(id) {
-    if (!window.confirm("Delete this paper? This cannot be undone.")) return;
+    if (!window.confirm('Delete this paper? This cannot be undone.')) return;
     setDeletingId(id);
     try {
       await apiClient.delete(`/upload/papers/${id}`);
       setPapers((prev) => prev.filter((p) => p.id !== id));
     } catch {
-      setError("Failed to delete paper.");
+      setError('Failed to delete paper.');
     }
     setDeletingId(null);
   }
@@ -129,12 +129,11 @@ const UploadPanel = ({ logoutHandler }) => {
   return (
     <section className="upload-page">
       <div className="upload-shell">
-
         {/* ── Header ── */}
         <div className="upload-head">
           <div>
             <p className="upload-eyebrow">Upload Sector</p>
-            <h1>{editingId ? "Edit Paper" : "Upload New Paper"}</h1>
+            <h1>{editingId ? 'Edit Paper' : 'Upload New Paper'}</h1>
           </div>
           <span className="preview-badge">
             <button onClick={logoutHandler}>Logout</button>
@@ -161,18 +160,30 @@ const UploadPanel = ({ logoutHandler }) => {
 
               <label>
                 <span>Semester</span>
-                <select name="semester" value={form.semester} onChange={handleChange}>
+                <select
+                  name="semester"
+                  value={form.semester}
+                  onChange={handleChange}
+                >
                   {SEMESTERS.map((s) => (
-                    <option key={s} value={s}>S{s}</option>
+                    <option key={s} value={s}>
+                      S{s}
+                    </option>
                   ))}
                 </select>
               </label>
 
               <label>
                 <span>Examination Type</span>
-                <select name="examType" value={form.examType} onChange={handleChange}>
+                <select
+                  name="examType"
+                  value={form.examType}
+                  onChange={handleChange}
+                >
                   {EXAM_TYPES.map(({ value, label }) => (
-                    <option key={value} value={value}>{label}</option>
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -181,7 +192,9 @@ const UploadPanel = ({ logoutHandler }) => {
                 <span>Year</span>
                 <select name="year" value={form.year} onChange={handleChange}>
                   {YEARS.map((y) => (
-                    <option key={y} value={y}>{y}</option>
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -190,7 +203,9 @@ const UploadPanel = ({ logoutHandler }) => {
                 <span>Batch</span>
                 <select name="batch" value={form.batch} onChange={handleChange}>
                   {BATCHES.map((b) => (
-                    <option key={b} value={b}>{b}</option>
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -200,7 +215,7 @@ const UploadPanel = ({ logoutHandler }) => {
             {!editingId && (
               <div className="drop-zone" style={{ marginTop: 16 }}>
                 <p>Select PDF file</p>
-                <span>{file ? file.name : "No file chosen"}</span>
+                <span>{file ? file.name : 'No file chosen'}</span>
                 <input
                   ref={fileRef}
                   type="file"
@@ -211,9 +226,20 @@ const UploadPanel = ({ logoutHandler }) => {
               </div>
             )}
 
-            {error && <p className="form-error" style={{ marginTop: 10 }}>{error}</p>}
+            {error && (
+              <p className="form-error" style={{ marginTop: 10 }}>
+                {error}
+              </p>
+            )}
             {success && (
-              <p style={{ marginTop: 10, color: "#116e3f", fontWeight: 600, fontSize: "0.9rem" }}>
+              <p
+                style={{
+                  marginTop: 10,
+                  color: '#116e3f',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                }}
+              >
                 {success}
               </p>
             )}
@@ -224,7 +250,11 @@ const UploadPanel = ({ logoutHandler }) => {
                 className="primary-action"
                 disabled={submitting}
               >
-                {submitting ? "Saving..." : editingId ? "Save Changes" : "Upload Paper"}
+                {submitting
+                  ? 'Saving...'
+                  : editingId
+                    ? 'Save Changes'
+                    : 'Upload Paper'}
               </button>
               {editingId && (
                 <button
@@ -240,7 +270,7 @@ const UploadPanel = ({ logoutHandler }) => {
         </form>
 
         {/* ── Papers list ── */}
-        <h3 style={{ margin: "8px 0 12px", fontSize: "1.1rem" }}>
+        <h3 style={{ margin: '8px 0 12px', fontSize: '1.1rem' }}>
           All Papers {!loadingPapers && `(${papers.length})`}
         </h3>
 
@@ -255,8 +285,9 @@ const UploadPanel = ({ logoutHandler }) => {
                 <div className="upload-paper-info">
                   <span className="upload-paper-title">{paper.title}</span>
                   <span className="upload-paper-meta">
-                    S{paper.semester} &middot; {paper.batch} &middot;{" "}
-                    {paper.examType === "MIDSEM" ? "Mid Sem" : "End Sem"} &middot; {paper.year}
+                    S{paper.semester} &middot; {paper.batch} &middot;{' '}
+                    {paper.examType === 'MIDSEM' ? 'Mid Sem' : 'End Sem'}{' '}
+                    &middot; {paper.year}
                   </span>
                 </div>
                 <div className="upload-paper-actions">
@@ -265,14 +296,22 @@ const UploadPanel = ({ logoutHandler }) => {
                     target="_blank"
                     rel="noreferrer"
                     className="secondary-action as-link"
-                    style={{ height: 32, padding: "0 12px", fontSize: "0.82rem" }}
+                    style={{
+                      height: 32,
+                      padding: '0 12px',
+                      fontSize: '0.82rem',
+                    }}
                   >
                     View
                   </a>
                   <button
                     type="button"
                     className="secondary-action"
-                    style={{ height: 32, padding: "0 12px", fontSize: "0.82rem" }}
+                    style={{
+                      height: 32,
+                      padding: '0 12px',
+                      fontSize: '0.82rem',
+                    }}
                     onClick={() => startEdit(paper)}
                   >
                     Edit
@@ -282,16 +321,16 @@ const UploadPanel = ({ logoutHandler }) => {
                     className="secondary-action"
                     style={{
                       height: 32,
-                      padding: "0 12px",
-                      fontSize: "0.82rem",
-                      border: "1px solid #ffccd7",
-                      background: "#fff5f7",
-                      color: "#9f1b3f",
+                      padding: '0 12px',
+                      fontSize: '0.82rem',
+                      border: '1px solid #ffccd7',
+                      background: '#fff5f7',
+                      color: '#9f1b3f',
                     }}
                     disabled={deletingId === paper.id}
                     onClick={() => handleDelete(paper.id)}
                   >
-                    {deletingId === paper.id ? "..." : "Delete"}
+                    {deletingId === paper.id ? '...' : 'Delete'}
                   </button>
                 </div>
               </div>
