@@ -1,0 +1,41 @@
+name: Dependabot Auto-Fix
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  fix-format:
+    runs-on: ubuntu-latest
+    # Only run this if the PR was opened by Dependabot
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # We need to check out the head of the PR to commit back to it
+          ref: ${{ github.event.pull_request.head.ref }}
+          # Use a token that has permission to push to the branch
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        # We use --package-lock-only or just install for the root to get Prettier
+        run: npm install
+
+      - name: Fix Linting and Formatting
+        run: |
+          npx eslint --fix .
+          npx prettier --write .
+
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: fix formatting for Dependabot PR'
+          # Ensures it uses the Dependabot branch
+          branch: ${{ github.event.pull_request.head.ref }}
