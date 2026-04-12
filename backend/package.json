@@ -9,7 +9,9 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
-    "create-admin": "node scripts/createAdmin.js"
+    "create-admin": "node scripts/createAdmin.js",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watchAll"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

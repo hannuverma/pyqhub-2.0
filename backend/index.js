@@ -34,6 +34,14 @@ app.use("/upload", uploadRouter);
 app.use("/", papersRouter);
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+
+// ONLY start the server if this file is run directly (node app.js)
+// This prevents the server from starting during tests
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+// Export the app for Supertest
+module.exports = app;
