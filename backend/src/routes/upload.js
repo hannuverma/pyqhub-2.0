@@ -63,38 +63,47 @@ router.get("/papers", async (req, res) => {
 
 // POST /upload  — create a new paper
 router.post("/", upload.single("pdf"), async (req, res) => {
-  const { title, semester, year, examType, batch } = req.body;
+	const { title, semester, year, examType, batch } = req.body;
 
-  if (!req.file) {
-    return res.status(400).json({ error: "PDF file is required." });
-  }
-  if (!title || !semester || !year || !examType) {
-    return res
-      .status(400)
-      .json({ error: "title, semester, year, and examType are required." });
-  }
-  if (!VALID_EXAM_TYPES.includes(examType)) {
-    return res.status(400).json({ error: "Invalid examType." });
-  }
-  if (batch && !VALID_BATCHES.includes(batch)) {
-    return res.status(400).json({ error: "Invalid batch." });
-  }
+	if (!req.file) {
+		return res.status(400).json({ error: "PDF file is required." });
+	}
+	if (req.file.mimetype !== "application/pdf") {
+		return res.status(400).json({ error: "Only PDF files are allowed." });
+	}
 
-  const result = await uploadToCloudinary(req.file.buffer);
+	const fileName = req.file.originalname.toLowerCase();
+	if (!fileName.endsWith(".pdf")) {
+		return res.status(400).json({ error: "File must have .pdf extension." });
+	}
 
-  const paper = await prisma.paper.create({
-    data: {
-      title,
-      semester: parseInt(semester, 10),
-      year: parseInt(year, 10),
-      examType,
-      batch: batch || "IT",
-      pdf: result.secure_url,
-      pdfPublicId: result.public_id,
-    },
-  });
+	if (!title || !semester || !year || !examType) {
+		return res
+			.status(400)
+			.json({ error: "title, semester, year, and examType are required." });
+	}
+	if (!VALID_EXAM_TYPES.includes(examType)) {
+		return res.status(400).json({ error: "Invalid examType." });
+	}
+	if (batch && !VALID_BATCHES.includes(batch)) {
+		return res.status(400).json({ error: "Invalid batch." });
+	}
 
-  return res.status(201).json(serializePaper(paper));
+	const result = await uploadToCloudinary(req.file.buffer);
+
+	const paper = await prisma.paper.create({
+		data: {
+			title,
+			semester: parseInt(semester, 10),
+			year: parseInt(year, 10),
+			examType,
+			batch: batch || "IT",
+			pdf: result.secure_url,
+			pdfPublicId: result.public_id,
+		},
+	});
+
+	return res.status(201).json(serializePaper(paper));
 });
 
 // PATCH /upload/papers/:id  — update paper metadata (no file re-upload)
