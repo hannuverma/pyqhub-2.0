@@ -29,7 +29,7 @@ const UploadLoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await apiClient.post('/api/token/', {
+      const response = await apiClient.post('/api/token', {
         email,
         password,
       });

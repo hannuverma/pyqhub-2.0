@@ -42,7 +42,28 @@ router.post('/', async (req, res) => {
   return res.json(tokens);
 });
 
-// POST /api/token/refresh/  — refresh access token
+// POST /api/token/refresh  — refresh access token
+router.post('/refresh', async (req, res) => {
+  const { refresh } = req.body;
+
+  if (!refresh) {
+    return res.status(400).json({ error: 'Refresh token required.' });
+  }
+
+  try {
+    const decoded = jwt.verify(refresh, process.env.JWT_REFRESH_SECRET);
+    const access = jwt.sign(
+      { userId: decoded.userId },
+      process.env.JWT_SECRET,
+      { expiresIn: ACCESS_EXPIRES }
+    );
+    return res.json({ access });
+  } catch {
+    return res.status(401).json({ error: 'Invalid or expired refresh token.' });
+  }
+});
+
+// Backward-compatible trailing-slash variant
 router.post('/refresh/', async (req, res) => {
   const { refresh } = req.body;
 
