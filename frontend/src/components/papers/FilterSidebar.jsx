@@ -1,9 +1,12 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const semesters = ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"];
-const batches = ["All", "IT", "DSA", "CSE"];
+const semesters = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'];
+const batches = ['All', 'IT', 'DSA', 'CSE'];
 const currentYear = new Date().getFullYear();
-const years = ["All", ...Array.from({ length: currentYear - 2022 }, (_, i) => 2023 + i)];
+const years = [
+  'All',
+  ...Array.from({ length: currentYear - 2022 }, (_, i) => 2023 + i),
+];
 
 const FilterSidebar = ({
   semester,
@@ -29,7 +32,7 @@ const FilterSidebar = ({
               <button
                 key={label}
                 type="button"
-                className={`semester-btn ${semester === value ? "active" : ""}`}
+                className={`semester-btn ${semester === value ? 'active' : ''}`}
                 onClick={() => onSemesterChange(value)}
               >
                 {label}
@@ -42,18 +45,20 @@ const FilterSidebar = ({
       <div className="filter-group">
         <p className="filter-label">Examination Type</p>
         <div className="exam-switch">
-          {[["All", null], ["Mid Sem", "MIDSEM"], ["End Sem", "ENDSEM"]].map(
-            ([label, value]) => (
-              <button
-                key={label}
-                type="button"
-                className={`exam-btn ${exam === value ? "active" : ""}`}
-                onClick={() => onExamChange(value)}
-              >
-                {label}
-              </button>
-            )
-          )}
+          {[
+            ['All', null],
+            ['Mid Sem', 'MIDSEM'],
+            ['End Sem', 'ENDSEM'],
+          ].map(([label, value]) => (
+            <button
+              key={label}
+              type="button"
+              className={`exam-btn ${exam === value ? 'active' : ''}`}
+              onClick={() => onExamChange(value)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -64,8 +69,8 @@ const FilterSidebar = ({
             <button
               key={y}
               type="button"
-              className={`exam-btn ${(y === "All" ? year === null : year === y) ? "active" : ""}`}
-              onClick={() => onYearChange(y === "All" ? null : y)}
+              className={`exam-btn ${(y === 'All' ? year === null : year === y) ? 'active' : ''}`}
+              onClick={() => onYearChange(y === 'All' ? null : y)}
             >
               {y}
             </button>
@@ -80,8 +85,8 @@ const FilterSidebar = ({
             <button
               key={b}
               type="button"
-              className={`exam-btn ${(b === "All" ? batch === null : batch === b) ? "active" : ""}`}
-              onClick={() => onBatchChange(b === "All" ? null : b)}
+              className={`exam-btn ${(b === 'All' ? batch === null : batch === b) ? 'active' : ''}`}
+              onClick={() => onBatchChange(b === 'All' ? null : b)}
             >
               {b}
             </button>

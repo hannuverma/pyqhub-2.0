@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 const linkClassName = ({ isActive }) =>
-  `nav-link ${isActive ? "nav-link-active" : ""}`;
+  `nav-link ${isActive ? 'nav-link-active' : ''}`;
 
 const Navbar = () => {
   return (

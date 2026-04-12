@@ -1,8 +1,8 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import api from "../services/apiClient.js";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "./constants.js";
-import { useState, useEffect } from "react";
+import { Navigate, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import api from '../services/apiClient.js';
+import { REFRESH_TOKEN, ACCESS_TOKEN } from './constants.js';
+import { useState, useEffect } from 'react';
 
 function ProtectedRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null);
@@ -28,7 +28,7 @@ function ProtectedRoute({ children }) {
       return;
     }
     try {
-      const res = await api.post("/api/token/refresh/", { refresh: token });
+      const res = await api.post('/api/token/refresh/', { refresh: token });
       if (res.status === 200) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         setIsAuthorized(true);

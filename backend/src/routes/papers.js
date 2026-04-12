@@ -1,13 +1,13 @@
-const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const NodeCache = require("node-cache");
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const NodeCache = require('node-cache');
 
 const router = express.Router();
 const prisma = new PrismaClient();
 const cache = new NodeCache({ stdTTL: 60 * 60 * 24 });
 
-const VALID_EXAM_TYPES = ["MIDSEM", "ENDSEM"];
-const VALID_BATCHES = ["IT", "DSA", "CSE"];
+const VALID_EXAM_TYPES = ['MIDSEM', 'ENDSEM'];
+const VALID_BATCHES = ['IT', 'DSA', 'CSE'];
 
 function buildPreviewUrl(publicId) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -29,7 +29,7 @@ function serializePaper(paper) {
 }
 
 // POST /  — get papers with filters
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const rawSemester = req.body.semester ?? null;
   const examType = req.body.exam ?? null;
   const rawYear = req.body.year ?? null;
@@ -39,22 +39,22 @@ router.post("/", async (req, res) => {
   if (rawSemester !== null) {
     semester = parseInt(rawSemester, 10);
     if (isNaN(semester)) {
-      return res.status(400).json({ error: "Invalid semester." });
+      return res.status(400).json({ error: 'Invalid semester.' });
     }
   }
 
   if (examType !== null && !VALID_EXAM_TYPES.includes(examType)) {
-    return res.status(400).json({ error: "Invalid exam type." });
+    return res.status(400).json({ error: 'Invalid exam type.' });
   }
 
   let year = null;
   if (rawYear !== null) {
     year = parseInt(rawYear, 10);
-    if (isNaN(year)) return res.status(400).json({ error: "Invalid year." });
+    if (isNaN(year)) return res.status(400).json({ error: 'Invalid year.' });
   }
 
   if (batch !== null && !VALID_BATCHES.includes(batch)) {
-    return res.status(400).json({ error: "Invalid batch." });
+    return res.status(400).json({ error: 'Invalid batch.' });
   }
 
   const where = {};
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
 
   const papers = await prisma.paper.findMany({
     where,
-    orderBy: { uploadedAt: "desc" },
+    orderBy: { uploadedAt: 'desc' },
   });
 
   return res.json({ papers: papers.map(serializePaper) });

@@ -1,12 +1,12 @@
-import { gsap } from "gsap"
-import { useGSAP } from "@gsap/react"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import AppRouter from "./app/AppRouter"
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import AppRouter from './app/AppRouter';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger)
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const App = () => {
-	return <AppRouter />
-}
+  return <AppRouter />;
+};
 
-export default App
+export default App;
