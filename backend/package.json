@@ -12,7 +12,8 @@
     "db:generate": "prisma generate",
     "create-admin": "node scripts/createAdmin.js",
     "test": "jest --detectOpenHandles",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
