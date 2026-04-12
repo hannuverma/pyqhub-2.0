@@ -8,6 +8,7 @@ const papersRouter = require('./src/routes/papers');
 const uploadRouter = require('./src/routes/upload');
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(
   cors({
