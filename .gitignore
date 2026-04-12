@@ -17,3 +17,35 @@ dist-ssr/
 .idea/
 *.suo
 *.sw?
+# Dependencies
+node_modules/
+dist/
+oh-modules/
+
+# Environment Variables (CRITICAL)
+.env
+.env.test
+.env.local
+
+# Database / Prisma
+/prisma/migrations/
+*.db
+*.db-journal
+
+# Testing / Coverage
+coverage/
+.jest_cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS Metadata
+.DS_Store
+Thumbs.db
+
+# Cloudinary / Temp files
+temp/
