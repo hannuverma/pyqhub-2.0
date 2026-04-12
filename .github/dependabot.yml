@@ -2,23 +2,23 @@ version: 2
 
 updates:
   # 🔥 Backend (Express)
-  - package-ecosystem: "npm"
-    directory: "/backend"
+  - package-ecosystem: 'npm'
+    directory: '/backend'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     commit-message:
-      prefix: "deps-backend"
+      prefix: 'deps-backend'
     labels:
-      - "backend"
-      - "dependencies"
+      - 'backend'
+      - 'dependencies'
 
   # 🔥 Frontend (React)
-  - package-ecosystem: "npm"
-    directory: "/frontend"
+  - package-ecosystem: 'npm'
+    directory: '/frontend'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     commit-message:
-      prefix: "deps-frontend"
+      prefix: 'deps-frontend'
     labels:
-      - "frontend"
-      - "dependencies"
+      - 'frontend'
+      - 'dependencies'

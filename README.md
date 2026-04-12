@@ -63,6 +63,7 @@ Frontend runs on `http://localhost:5173`
 ## Environment Configuration
 
 ### Backend (.env)
+
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/pyqhub
 JWT_SECRET=your-secret-key
@@ -74,6 +75,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173
 ```
 
 ### Frontend (.env)
+
 ```env
 VITE_API_URL=http://localhost:8000
 ```
@@ -81,12 +83,14 @@ VITE_API_URL=http://localhost:8000
 ## Development Scripts
 
 ### Backend
+
 - `npm run dev` — Start with auto-reload
 - `npm run format` — Format code with prettier
 - `npm test` — Run tests
 - `npm run db:migrate` — Run database migrations
 
-### Frontend  
+### Frontend
+
 - `npm run dev` — Start dev server
 - `npm run build` — Production build
 - `npm run lint` — Run ESLint

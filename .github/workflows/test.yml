@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -37,12 +37,12 @@ jobs:
       - name: Run Tests
         run: npm test --prefix backend
         env:
-          DATABASE_URL: "postgresql://postgres:password@localhost:5432/testdb"
-          JWT_SECRET: "super-secret-ci-key"
-          JWT_REFRESH_SECRET: "refresh-secret-ci-key"
-          CLOUDINARY_CLOUD_NAME: "test"
-          CLOUDINARY_API_KEY: "test"
-          CLOUDINARY_API_SECRET: "test"
+          DATABASE_URL: 'postgresql://postgres:password@localhost:5432/testdb'
+          JWT_SECRET: 'super-secret-ci-key'
+          JWT_REFRESH_SECRET: 'refresh-secret-ci-key'
+          CLOUDINARY_CLOUD_NAME: 'test'
+          CLOUDINARY_API_KEY: 'test'
+          CLOUDINARY_API_SECRET: 'test'
 
         # Add this step before running logic tests
       - name: Check Formatting (Prettier)
