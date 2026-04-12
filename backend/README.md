@@ -19,6 +19,7 @@ Express.js backend for PyQHub serving papers management and user authentication.
 ## Setup
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 ```
@@ -66,17 +67,20 @@ npm run create-admin
 ## Development
 
 ### Start Server
+
 ```bash
 npm run dev       # with auto-reload (nodemon)
 npm start         # production
 ```
 
 ### Format Code
+
 ```bash
 npm run format    # prettier --write
 ```
 
 ### Testing
+
 ```bash
 npm test          # run tests once
 npm run test:watch # watch mode
@@ -87,9 +91,11 @@ npm run test:watch # watch mode
 ### Authentication
 
 #### POST `/api/token/` — Login
+
 Get access and refresh tokens.
 
 **Request:**
+
 ```json
 {
   "email": "user@example.com",
@@ -98,6 +104,7 @@ Get access and refresh tokens.
 ```
 
 **Response (200):**
+
 ```json
 {
   "access": "eyJhbGc...",
@@ -106,15 +113,18 @@ Get access and refresh tokens.
 ```
 
 **Errors:**
+
 - `400`: Email and password required
 - `401`: Invalid credentials
 
 ---
 
 #### POST `/api/token/refresh/` — Refresh Token
+
 Generate new access token.
 
 **Request:**
+
 ```json
 {
   "refresh": "eyJhbGc..."
@@ -122,6 +132,7 @@ Generate new access token.
 ```
 
 **Response (200):**
+
 ```json
 {
   "access": "eyJhbGc..."
@@ -129,6 +140,7 @@ Generate new access token.
 ```
 
 **Errors:**
+
 - `400`: Refresh token required
 - `401`: Invalid or expired refresh token
 
@@ -137,9 +149,11 @@ Generate new access token.
 ### Papers
 
 #### POST `/` — Get Papers (Filtered)
+
 Retrieve papers with optional filters. No authentication required.
 
 **Request Body (all optional):**
+
 ```json
 {
   "semester": 3,
@@ -150,12 +164,14 @@ Retrieve papers with optional filters. No authentication required.
 ```
 
 **Query Parameters:**
+
 - `semester` (number): Semester number
 - `exam` (string): `MIDSEM` or `ENDSEM`
 - `year` (number): Year of exam
 - `batch` (string): `IT`, `DSA`, or `CSE`
 
 **Response (200):**
+
 ```json
 {
   "papers": [
@@ -183,14 +199,17 @@ Retrieve papers with optional filters. No authentication required.
 All upload routes require JWT authentication via `Authorization: Bearer <token>` header.
 
 #### GET `/upload/papers` — List All Papers
+
 Retrieve all papers (admin endpoint).
 
 **Headers:**
+
 ```
 Authorization: Bearer <access_token>
 ```
 
 **Response (200):**
+
 ```json
 [
   {
@@ -210,15 +229,18 @@ Authorization: Bearer <access_token>
 ---
 
 #### POST `/upload` — Create Paper
+
 Upload a new paper with PDF file.
 
 **Headers:**
+
 ```
 Authorization: Bearer <access_token>
 Content-Type: multipart/form-data
 ```
 
 **Form Data:**
+
 - `pdf` (file, required): PDF file (multipart file field)
 - `title` (string, required): Paper title
 - `semester` (number, required): Semester (1-8)
@@ -227,6 +249,7 @@ Content-Type: multipart/form-data
 - `batch` (string, optional): `IT`, `DSA`, or `CSE` (defaults to `IT`)
 
 **Response (201):**
+
 ```json
 {
   "id": 1,
@@ -242,20 +265,24 @@ Content-Type: multipart/form-data
 ```
 
 **Errors:**
+
 - `400`: PDF file required, invalid file type, missing fields
 - `401`: Authentication required
 
 ---
 
 #### PATCH `/upload/papers/:id` — Update Paper
+
 Update paper metadata (not file).
 
 **Headers:**
+
 ```
 Authorization: Bearer <access_token>
 ```
 
 **Request Body (all optional):**
+
 ```json
 {
   "title": "Updated Title",
@@ -267,6 +294,7 @@ Authorization: Bearer <access_token>
 ```
 
 **Response (200):**
+
 ```json
 {
   "id": 1,
@@ -282,6 +310,7 @@ Authorization: Bearer <access_token>
 ```
 
 **Errors:**
+
 - `400`: Invalid field values
 - `401`: Authentication required
 - `404`: Paper not found
@@ -289,9 +318,11 @@ Authorization: Bearer <access_token>
 ---
 
 #### DELETE `/upload/papers/:id` — Delete Paper
+
 Delete paper and Cloudinary files.
 
 **Headers:**
+
 ```
 Authorization: Bearer <access_token>
 ```
@@ -299,6 +330,7 @@ Authorization: Bearer <access_token>
 **Response (204):** No content
 
 **Errors:**
+
 - `401`: Authentication required
 - `404`: Paper not found
 
@@ -309,6 +341,7 @@ Authorization: Bearer <access_token>
 Global rate limit: **60 requests per minute** per IP.
 
 Response when exceeded:
+
 ```json
 {
   "error": "Too many requests, please try again later."
@@ -325,6 +358,7 @@ Response when exceeded:
 ## Database Schema
 
 Key tables (managed by Prisma):
+
 - **User**: Stores user credentials
 - **Paper**: Stores paper metadata and Cloudinary references
 
@@ -333,22 +367,26 @@ Run `npx prisma studio` to view/edit data.
 ## Troubleshooting
 
 ### Database Connection Issues
+
 - Verify `DATABASE_URL` in `.env`
 - Check PostgreSQL is running
 - Run `npm run db:migrate`
 
 ### Cloudinary Upload Failures
+
 - Verify Cloudinary credentials
 - Check file size limits (ensure PDFs < max configured)
 - Validate API keys in `.env`
 
 ### Authentication Errors
+
 - Expired tokens: refresh using `/api/token/refresh/`
 - Invalid token: re-login at `/api/token/`
 
 ## Deployment
 
 Update environment variables on deployment platform, then:
+
 ```bash
 npm install --production
 npm run db:push
