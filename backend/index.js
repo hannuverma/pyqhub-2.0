@@ -30,8 +30,8 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use('/api/token', authRouter);
-app.use('/upload', uploadRouter);
-app.use('/', papersRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/papers', papersRouter);
 
 const PORT = process.env.PORT || 8000;
 

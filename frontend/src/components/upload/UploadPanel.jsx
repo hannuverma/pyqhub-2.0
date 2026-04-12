@@ -41,7 +41,7 @@ const UploadPanel = ({ logoutHandler }) => {
   async function loadPapers() {
     setLoadingPapers(true);
     try {
-      const res = await apiClient.get('/upload/papers');
+      const res = await apiClient.get('/api/upload/papers');
       setPapers(res.data);
     } catch {
       setError('Failed to load papers.');
@@ -93,7 +93,7 @@ const UploadPanel = ({ logoutHandler }) => {
     setSubmitting(true);
     try {
       if (editingId) {
-        await apiClient.patch(`/upload/papers/${editingId}`, form);
+        await apiClient.patch(`/api/upload/papers/${editingId}`, form);
         setSuccess('Paper updated successfully.');
         setEditingId(null);
         setForm(EMPTY_FORM);
@@ -101,7 +101,7 @@ const UploadPanel = ({ logoutHandler }) => {
         const data = new FormData();
         Object.entries(form).forEach(([k, v]) => data.append(k, v));
         data.append('pdf', file);
-        await apiClient.post('/upload', data);
+        await apiClient.post('/api/upload', data);
         setSuccess('Paper uploaded successfully.');
         setForm(EMPTY_FORM);
         setFile(null);
@@ -118,7 +118,7 @@ const UploadPanel = ({ logoutHandler }) => {
     if (!window.confirm('Delete this paper? This cannot be undone.')) return;
     setDeletingId(id);
     try {
-      await apiClient.delete(`/upload/papers/${id}`);
+      await apiClient.delete(`/api/upload/papers/${id}`);
       setPapers((prev) => prev.filter((p) => p.id !== id));
     } catch {
       setError('Failed to delete paper.');

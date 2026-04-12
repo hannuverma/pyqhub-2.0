@@ -48,16 +48,16 @@ describe('Papers API Development Tests', () => {
   });
 
   //   --- Authentication Tests ---
-  test('GET /upload/papers should fail without token', async () => {
-    const res = await request(app).get('/upload/papers');
+  test('GET /api/upload/papers should fail without token', async () => {
+    const res = await request(app).get('/api/upload/papers');
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('Authentication required.');
   });
 
   //   --- Validation Tests ---
-  test('POST /upload should fail with invalid examType', async () => {
+  test('POST /api/upload should fail with invalid examType', async () => {
     const res = await request(app)
-      .post('/upload')
+      .post('/api/upload')
       .set('Authorization', `Bearer ${authToken}`)
       .field('title', 'Math Exam')
       .field('semester', '1')
@@ -69,9 +69,9 @@ describe('Papers API Development Tests', () => {
     expect(res.body.error).toBe('Invalid examType.');
   });
 
-  test('POST /upload should fail if file is not PDF', async () => {
+  test('POST /api/upload should fail if file is not PDF', async () => {
     const res = await request(app)
-      .post('/upload')
+      .post('/api/upload')
       .set('Authorization', `Bearer ${authToken}`)
       .attach('pdf', Buffer.from('not a pdf'), 'test.txt');
 
@@ -79,7 +79,7 @@ describe('Papers API Development Tests', () => {
   });
 
   //   --- Functional Tests ---
-  test('POST /upload creates a paper successfully', async () => {
+  test('POST /api/upload creates a paper successfully', async () => {
     const mockPaper = {
       id: 1,
       title: 'Test',
@@ -93,7 +93,7 @@ describe('Papers API Development Tests', () => {
     mockPrisma.paper.create.mockResolvedValue(mockPaper);
 
     const res = await request(app)
-      .post('/upload')
+      .post('/api/upload')
       .set('Authorization', `Bearer ${authToken}`)
       .field('title', 'Test')
       .field('semester', '1')
@@ -105,10 +105,10 @@ describe('Papers API Development Tests', () => {
     expect(res.body.title).toBe('Test');
   });
 
-  test('DELETE /upload/papers/:id should return 404 for non-existent paper', async () => {
+  test('DELETE /api/upload/papers/:id should return 404 for non-existent paper', async () => {
     mockPrisma.paper.findUnique.mockResolvedValue(null);
     const res = await request(app)
-      .delete('/upload/papers/999')
+      .delete('/api/upload/papers/999')
       .set('Authorization', `Bearer ${authToken}`);
 
     expect(res.statusCode).toBe(404);

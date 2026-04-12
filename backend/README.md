@@ -148,7 +148,7 @@ Generate new access token.
 
 ### Papers
 
-#### POST `/` — Get Papers (Filtered)
+#### POST `/api/papers` — Get Papers (Filtered)
 
 Retrieve papers with optional filters. No authentication required.
 
@@ -198,7 +198,7 @@ Retrieve papers with optional filters. No authentication required.
 
 All upload routes require JWT authentication via `Authorization: Bearer <token>` header.
 
-#### GET `/upload/papers` — List All Papers
+#### GET `/api/upload/papers` — List All Papers
 
 Retrieve all papers (admin endpoint).
 
@@ -228,7 +228,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### POST `/upload` — Create Paper
+#### POST `/api/upload` — Create Paper
 
 Upload a new paper with PDF file.
 
@@ -271,7 +271,7 @@ Content-Type: multipart/form-data
 
 ---
 
-#### PATCH `/upload/papers/:id` — Update Paper
+#### PATCH `/api/upload/papers/:id` — Update Paper
 
 Update paper metadata (not file).
 
@@ -317,7 +317,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### DELETE `/upload/papers/:id` — Delete Paper
+#### DELETE `/api/upload/papers/:id` — Delete Paper
 
 Delete paper and Cloudinary files.
 
@@ -392,5 +392,12 @@ npm install --production
 npm run db:push
 npm start
 ```
+
+### Vercel Serverless Notes
+
+- Express is exported from `backend/index.js` and mounted by `api/[...all].js`
+- All API routes use `/api/*` prefixes to avoid conflicts with frontend routes
+- `vercel.json` builds the frontend and serves it from `frontend/dist`
+- For Vercel deployments, run Prisma migrations separately in your database workflow
 
 See also: [Root README](../README.md)

@@ -75,7 +75,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173
 
 ### Frontend (.env)
 ```env
-VITE_API_BASE_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000
 ```
 
 ## Development Scripts
@@ -98,16 +98,33 @@ Full API documentation is in [Backend README](backend/README.md).
 ### Key Endpoints
 
 - **Authentication**: `POST /api/token/` (login), `POST /api/token/refresh/` (refresh)
-- **Papers**: `POST /` (get filtered papers)
-- **Upload** (protected): `POST /upload`, `GET /upload/papers`, `PATCH /upload/papers/:id`, `DELETE /upload/papers/:id`
+- **Papers**: `POST /api/papers` (get filtered papers)
+- **Upload** (protected): `POST /api/upload`, `GET /api/upload/papers`, `PATCH /api/upload/papers/:id`, `DELETE /api/upload/papers/:id`
 
 ## Deployment
 
-### Backend
-Deploy to any Node.js hosting (Heroku, Railway, Render, etc.). Update environment variables.
+### Vercel (Frontend + Serverless API)
 
-### Frontend  
-Build and deploy to static hosting (Vercel, Netlify, GitHub Pages).
+This repository is configured for single-project Vercel deployment:
+
+- React frontend is built from `frontend/` into `frontend/dist`
+- Express backend is served as a Vercel serverless function via `api/[...all].js`
+
+Set these environment variables in Vercel project settings:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `JWT_REFRESH_SECRET`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `CORS_ALLOWED_ORIGINS` (include your Vercel domain)
+
+Optional frontend variable on Vercel:
+
+- `VITE_API_URL` (leave unset to use same-origin calls)
+
+Deploy command flow is handled by `vercel.json`.
 
 ## License
 

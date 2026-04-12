@@ -13,7 +13,7 @@ const normalizePaper = (paper) => ({
 
 export const getPapers = async ({ semester, exam, year, batch }) => {
   try {
-    const response = await apiClient.post('/', {
+    const response = await apiClient.post('/api/papers', {
       semester,
       ...(exam && { exam }),
       ...(year && { year }),
