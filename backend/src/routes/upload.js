@@ -16,7 +16,7 @@ cloudinary.config({
 });
 
 const VALID_EXAM_TYPES = ['MIDSEM', 'ENDSEM'];
-const VALID_BATCHES = ['IT', 'DSA', 'CSE'];
+const VALID_BATCHES = ['IT', 'DSA', 'CSE', 'ALL'];
 
 function buildPreviewUrl(publicId) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -89,21 +89,27 @@ router.post('/', upload.single('pdf'), async (req, res) => {
     return res.status(400).json({ error: 'Invalid batch.' });
   }
 
-  const result = await uploadToCloudinary(req.file.buffer);
+  try {
+    const result = await uploadToCloudinary(req.file.buffer);
 
-  const paper = await prisma.paper.create({
-    data: {
-      title,
-      semester: parseInt(semester, 10),
-      year: parseInt(year, 10),
-      examType,
-      batch: batch || 'IT',
-      pdf: result.secure_url,
-      pdfPublicId: result.public_id,
-    },
-  });
-
-  return res.status(201).json(serializePaper(paper));
+    const paper = await prisma.paper.create({
+      data: {
+        title,
+        semester: parseInt(semester, 10),
+        year: parseInt(year, 10),
+        examType,
+        batch: batch || 'IT',
+        pdf: result.secure_url,
+        pdfPublicId: result.public_id,
+      },
+    });
+    return res.status(201).json(serializePaper(paper));
+  } catch (error) {
+    // console.error('Cloudinary upload error:', error);
+    return res
+      .status(500)
+      .json({ error: 'Failed to upload PDF. file size too large.' });
+  }
 });
 
 // PATCH /upload/papers/:id  — update paper metadata (no file re-upload)

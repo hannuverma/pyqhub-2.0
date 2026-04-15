@@ -7,7 +7,7 @@ const EXAM_TYPES = [
   { value: 'MIDSEM', label: 'Mid Sem' },
   { value: 'ENDSEM', label: 'End Sem' },
 ];
-const BATCHES = ['IT', 'DSA', 'CSE'];
+const BATCHES = ['IT', 'DSA', 'CSE', 'ALL'];
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from(
   { length: currentYear - 2022 },

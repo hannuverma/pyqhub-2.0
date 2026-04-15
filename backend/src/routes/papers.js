@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const cache = new NodeCache({ stdTTL: 60 * 60 * 24 });
 
 const VALID_EXAM_TYPES = ['MIDSEM', 'ENDSEM'];
-const VALID_BATCHES = ['IT', 'DSA', 'CSE'];
+const VALID_BATCHES = ['IT', 'DSA', 'CSE', 'ALL'];
 
 function buildPreviewUrl(publicId) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
