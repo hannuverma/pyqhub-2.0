@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "node-cache": "^5.1.2",
+    "pdf-lib": "^1.17.1",
     "streamifier": "^0.1.1"
   },
   "devDependencies": {
