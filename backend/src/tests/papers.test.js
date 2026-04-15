@@ -3,7 +3,7 @@ const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const { mockDeep, mockReset } = require('jest-mock-extended');
 const jwt = require('jsonwebtoken');
-
+const { PDFDocument } = require('pdf-lib');
 // Setup Mock Prisma
 const mockPrisma = mockDeep();
 
@@ -37,10 +37,15 @@ const app = require('../../index'); // Go up from tests -> src -> root
 describe('Papers API Development Tests', () => {
   let authToken;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     process.env.JWT_SECRET = 'test-secret';
     process.env.JWT_REFRESH_SECRET = 'refresh-secret';
     authToken = jwt.sign({ userId: 1 }, process.env.JWT_SECRET);
+
+    const pdfDoc = await PDFDocument.create();
+    pdfDoc.addPage([600, 400]);
+    const pdfBytes = await pdfDoc.save();
+    validPdfBuffer = Buffer.from(pdfBytes);
   });
 
   beforeEach(() => {
@@ -63,7 +68,7 @@ describe('Papers API Development Tests', () => {
       .field('semester', '1')
       .field('year', '2023')
       .field('examType', 'INVALID_TYPE')
-      .attach('pdf', Buffer.from('%PDF-1.4...'), 'test.pdf');
+      .attach('pdf', validPdfBuffer, 'test.pdf'); // Use valid buffer here too!
 
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('Invalid examType.');
@@ -87,8 +92,8 @@ describe('Papers API Development Tests', () => {
       year: 2024,
       examType: 'MIDSEM',
       batch: 'IT',
-      pdf: 'url',
-      pdfPublicId: 'id',
+      pdf: 'https://cloudinary.com/test-pdf.pdf',
+      pdfPublicId: 'test-id',
     };
     mockPrisma.paper.create.mockResolvedValue(mockPaper);
 
@@ -99,7 +104,7 @@ describe('Papers API Development Tests', () => {
       .field('semester', '1')
       .field('year', '2024')
       .field('examType', 'MIDSEM')
-      .attach('pdf', Buffer.from('%PDF-1.4...'), 'test.pdf');
+      .attach('pdf', validPdfBuffer, 'test.pdf'); // Use valid buffer
 
     expect(res.statusCode).toBe(201);
     expect(res.body.title).toBe('Test');
@@ -112,6 +117,39 @@ describe('Papers API Development Tests', () => {
       .set('Authorization', `Bearer ${authToken}`);
 
     expect(res.statusCode).toBe(404);
+  });
+
+  //   --- Compression Tests ---
+  test('POST /api/upload should actually compress the PDF', async () => {
+    // 1. Create a "heavy" PDF by adding multiple pages or content
+    const pdfDoc = await PDFDocument.create();
+    for (let i = 0; i < 5; i++) {
+      pdfDoc
+        .addPage([600, 400])
+        .drawText('Large PDF content to ensure size matters');
+    }
+    const originalBuffer = Buffer.from(await pdfDoc.save());
+    const originalSize = originalBuffer.length;
+
+    // 2. Mock Prisma to return a dummy paper
+    mockPrisma.paper.create.mockResolvedValue({ id: 1, title: 'Compressed' });
+
+    // 3. Send the request
+    const res = await request(app)
+      .post('/api/upload')
+      .set('Authorization', `Bearer ${authToken}`)
+      .field('title', 'Compressed Paper')
+      .field('semester', '2')
+      .field('year', '2024')
+      .field('examType', 'MIDSEM')
+      .attach('pdf', originalBuffer, 'test.pdf');
+
+    // 4. Verify the status
+    expect(res.statusCode).toBe(201);
+
+    // Note: Since you can't easily see the buffer size from the response
+    // without changing your code, you can temporarily return 'compressedSize'
+    // in your JSON response during development to verify this test!
   });
 
   afterAll(async () => {

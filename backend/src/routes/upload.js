@@ -23,13 +23,13 @@ const { PDFDocument } = require('pdf-lib');
 // Add this helper function
 async function compressPdfBuffer(buffer) {
   const pdfDoc = await PDFDocument.load(buffer);
-  
+
   // This reduces the size by compressing internal object streams
   // and removing unused metadata.
-  const compressedBytes = await pdfDoc.save({ 
-    useObjectStreams: true 
+  const compressedBytes = await pdfDoc.save({
+    useObjectStreams: true,
   });
-  
+
   return Buffer.from(compressedBytes);
 }
 
@@ -122,6 +122,7 @@ router.post('/', upload.single('pdf'), async (req, res) => {
     return res.status(201).json(serializePaper(paper));
   } catch (error) {
     // console.error('Cloudinary upload error:', error);
+    console.error('Upload error details:', error);
     return res
       .status(500)
       .json({ error: 'Failed to upload PDF. file size too large.' });
@@ -135,7 +136,7 @@ router.patch('/papers/:id', async (req, res) => {
 
   const existing = await prisma.paper.findUnique({ where: { id } });
   if (!existing) {
-    return res.status(404).json({ error: 'Paper not found.' }); 
+    return res.status(404).json({ error: 'Paper not found.' });
   }
 
   if (examType && !VALID_EXAM_TYPES.includes(examType)) {
