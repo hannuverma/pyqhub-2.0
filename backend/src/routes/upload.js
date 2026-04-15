@@ -18,21 +18,6 @@ cloudinary.config({
 const VALID_EXAM_TYPES = ['MIDSEM', 'ENDSEM'];
 const VALID_BATCHES = ['IT', 'DSA', 'CSE', 'ALL'];
 
-const { PDFDocument } = require('pdf-lib');
-
-// Add this helper function
-async function compressPdfBuffer(buffer) {
-  const pdfDoc = await PDFDocument.load(buffer);
-
-  // This reduces the size by compressing internal object streams
-  // and removing unused metadata.
-  const compressedBytes = await pdfDoc.save({
-    useObjectStreams: true,
-  });
-
-  return Buffer.from(compressedBytes);
-}
-
 function buildPreviewUrl(publicId) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   return `https://res.cloudinary.com/${cloudName}/image/upload/pg_1/${publicId}.jpg`;
@@ -105,8 +90,7 @@ router.post('/', upload.single('pdf'), async (req, res) => {
   }
 
   try {
-    const compressedBuffer = await compressPdfBuffer(req.file.buffer);
-    const result = await uploadToCloudinary(compressedBuffer);
+    const result = await uploadToCloudinary(req.file.buffer);
 
     const paper = await prisma.paper.create({
       data: {
