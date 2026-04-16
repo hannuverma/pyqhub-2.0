@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom';
 const linkClassName = ({ isActive }) =>
   `nav-link ${isActive ? 'nav-link-active' : ''}`;
 
-const Navbar = () => {
+const Navbar = ({ theme, onToggleTheme }) => {
+  const isDark = theme === 'dark';
+
   return (
     <header className="topbar">
       <div className="brand">Academic Curator</div>
@@ -18,14 +20,19 @@ const Navbar = () => {
       </nav>
 
       <div className="topbar-tools">
-        <div className="search-wrap" role="search">
-          <input
-            type="search"
-            className="search-input"
-            placeholder="Search papers..."
-            aria-label="Search papers"
-          />
-        </div>
+        <button
+          type="button"
+          className={`theme-toggle ${isDark ? 'is-dark' : ''}`}
+          onClick={onToggleTheme}
+          aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+          title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+        >
+          <span className="theme-toggle-track" aria-hidden="true">
+            <span className="theme-icon theme-icon-sun">☀</span>
+            <span className="theme-icon theme-icon-moon">☾</span>
+            <span className="theme-toggle-thumb" />
+          </span>
+        </button>
         <button className="avatar-btn" type="button" aria-label="Account">
           <span className="avatar-dot" />
         </button>
