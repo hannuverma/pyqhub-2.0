@@ -10,21 +10,22 @@ const HomePage = () => {
     () => {
       gsap.from('.hero-title', {
         y: 100,
-        x: -100,
         duration: 1,
+        opacity: 0,
         ease: 'power2.out',
       });
       gsap.from('.hero-subtitle', {
-        y: -100,
-        x: 100,
+        y: -10,
         duration: 1,
+        delay: 0.5,
+        opacity: 0,
         ease: 'power2.out',
       });
       gsap.from('.hero-cta', {
         opacity: 0,
         y: 20,
         duration: 0.8,
-        delay: 0.6,
+        delay: 1,
         ease: 'power2.out',
       });
     },
@@ -32,11 +33,8 @@ const HomePage = () => {
   );
 
   return (
-    <div
-      ref={heroRef}
-      className="w-full min-h-[calc(100vh-72px)] grid place-items-center"
-    >
-      <div className="w-[95vw] h-[90vh] home-img-div relative rounded-[80px] overflow-hidden">
+    <div ref={heroRef} className="home-hero">
+      {/* <div className="w-[95vw] h-[90vh] home-img-div relative rounded-[80px] overflow-hidden">
         <h1 className="hero-title text-[10vw] bg-[#C68C46] text-white px-10 py-4 rounded-tr-3xl font-bold inline-block absolute bottom-0">
           PYQ's
         </h1>
@@ -49,7 +47,18 @@ const HomePage = () => {
         >
           Browse Papers →
         </Link>
-      </div>
+      </div> */}
+      <h1 className="hero-title home-hero-title">
+        Find Previous Year{' '}
+        <span className="home-hero-accent">Question Papers </span> Instantly
+      </h1>
+      <p className="hero-subtitle home-hero-subtitle">
+        We bridge the gap between cluttered resources and organized academic
+        success
+      </p>
+      <Link to="/papers" className="hero-cta home-hero-cta">
+        Browse Papers →
+      </Link>
     </div>
   );
 };
