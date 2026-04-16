@@ -31,6 +31,7 @@
   --toggle-track-end: #cfd6ff;
   --toggle-thumb: #ffffff;
   --topbar-height: 72px;
+  --h4-color: #111321;
 }
 
 :root[data-theme='dark'] {
@@ -52,6 +53,7 @@
   --toggle-track-start: #273a66;
   --toggle-track-end: #111827;
   --toggle-thumb: #f9fbff;
+  --h4-color: #f9fbff;
 }
 
 * {
@@ -587,7 +589,7 @@ a {
   font-size: 1.43rem;
   line-height: 1.2;
   font-weight: 700;
-  color: #111321;
+  color: var(--h4-color);
 }
 
 .paper-meta {
