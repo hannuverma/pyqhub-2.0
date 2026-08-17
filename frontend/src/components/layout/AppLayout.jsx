@@ -34,7 +34,9 @@ const AppLayout = () => {
         <span>2025 The Academic Curator. Editorial quality.</span>
         <div className="footer-links">
           <a href="#">Contact</a>
-          <a href="https://github.com/hannuverma/pyqhub-2.0" target='blank'>GitHub</a>
+          <a href="https://github.com/hannuverma/pyqhub-2.0" target="blank">
+            GitHub
+          </a>
         </div>
       </footer>
     </div>
