@@ -31,12 +31,10 @@ const AppLayout = () => {
         <Outlet />
       </main>
       <footer className="page-footer">
-        <span>2024 The Academic Curator. Editorial quality.</span>
+        <span>2025 The Academic Curator. Editorial quality.</span>
         <div className="footer-links">
-          <a href="#">About</a>
           <a href="#">Contact</a>
-          <a href="#">GitHub</a>
-          <a href="#">Credits</a>
+          <a href="https://github.com/hannuverma/pyqhub-2.0" target='blank'>GitHub</a>
         </div>
       </footer>
     </div>

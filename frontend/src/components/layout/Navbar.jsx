@@ -8,7 +8,14 @@ const Navbar = ({ theme, onToggleTheme }) => {
 
   return (
     <header className="topbar">
-      <div className="brand">Academic Curator</div>
+      <div className="brand">
+        <a href="/">{isDark ? (
+          <img src="/dark-full-logo.png" alt="logo" className="w-32" />
+        ) : (
+          <img src="/light-full-logo.png" alt="logo" className="w-32" />
+        )}</a>
+        
+      </div>
 
       <nav className="topnav" aria-label="Primary navigation">
         <NavLink to="/" end className={linkClassName}>
@@ -28,13 +35,14 @@ const Navbar = ({ theme, onToggleTheme }) => {
           title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
         >
           <span className="theme-toggle-track" aria-hidden="true">
-            <span className="theme-icon theme-icon-sun">☀</span>
-            <span className="theme-icon theme-icon-moon">☾</span>
+            <span className="theme-icon theme-icon-sun">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </span>
+            <span className="theme-icon theme-icon-moon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </span>
             <span className="theme-toggle-thumb" />
           </span>
-        </button>
-        <button className="avatar-btn" type="button" aria-label="Account">
-          <span className="avatar-dot" />
         </button>
       </div>
     </header>
