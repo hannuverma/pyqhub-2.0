@@ -34,10 +34,6 @@ const UploadPanel = ({ logoutHandler }) => {
   const [success, setSuccess] = useState('');
   const fileRef = useRef(null);
 
-  useEffect(() => {
-    loadPapers();
-  }, []);
-
   async function loadPapers() {
     setLoadingPapers(true);
     try {
@@ -48,6 +44,11 @@ const UploadPanel = ({ logoutHandler }) => {
     }
     setLoadingPapers(false);
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadPapers();
+  }, []);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

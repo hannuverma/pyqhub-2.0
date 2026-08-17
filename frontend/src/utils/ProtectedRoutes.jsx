@@ -8,13 +8,6 @@ function ProtectedRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null);
   const location = useLocation();
 
-  useEffect(() => {
-    auth().catch(() => {
-      clearTokens();
-      setIsAuthorized(false);
-    });
-  }, []);
-
   function clearTokens() {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
@@ -60,6 +53,14 @@ function ProtectedRoute({ children }) {
       setIsAuthorized(false);
     }
   };
+
+  useEffect(() => {
+    auth().catch(() => {
+      clearTokens();
+      setIsAuthorized(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isAuthorized === null) {
     return null;
