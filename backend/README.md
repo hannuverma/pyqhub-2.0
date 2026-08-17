@@ -1,6 +1,6 @@
-# PyQHub Backend (Express + Prisma)
+# PyQHub 2.0 Backend (Express + Prisma)
 
-Express.js backend for PyQHub serving papers management and user authentication.
+Express.js backend for PyQHub 2.0 serving papers management and user authentication.
 
 ## Stack
 

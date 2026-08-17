@@ -1,7 +1,7 @@
 {
-  "name": "pyqhub-backend",
+  "name": "pyqhub-2.0-backend",
   "version": "1.0.0",
-  "description": "PyQHub Express backend",
+  "description": "PyQHub 2.0 Express backend",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
