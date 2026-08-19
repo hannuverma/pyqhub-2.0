@@ -61,6 +61,29 @@
   --h4-color: #f9fbff;
 }
 
+/* 🤫 shhh… you didn't see this */
+:root[data-theme='wedidthisonpurposelol'] {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --surface: #1a1a1a;
+  --border: #333333;
+  --muted: #999999;
+  --text: #ffffff;
+  --accent: #ff9900;
+  --accent-soft: #2b1d00;
+  --shadow: 0 18px 38px rgba(0, 0, 0, 0.6);
+  --topbar-bg: rgba(0, 0, 0, 0.92);
+  --body-gradient: radial-gradient(circle at 18% -5%, #1a1400, #000000 48%);
+  --pill-bg: #111111;
+  --pill-border: #444444;
+  --button-muted: #1a1a1a;
+  --toggle-track-start: #4d3300;
+  --toggle-track-end: #1a1100;
+  --toggle-thumb: #ff9900;
+  --h4-color: #ffaa00;
+}
+
 * {
   box-sizing: border-box;
 }

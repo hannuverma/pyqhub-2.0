@@ -4,13 +4,15 @@ const linkClassName = ({ isActive }) =>
   `nav-link ${isActive ? 'nav-link-active' : ''}`;
 
 const Navbar = ({ theme, onToggleTheme }) => {
-  const isDark = theme === 'dark';
+  const isDark = theme === 'dark' || theme === 'wedidthisonpurposelol';
 
   return (
     <header className="topbar">
       <div className="brand">
         <a href="/">
-          {isDark ? (
+          {theme === 'wedidthisonpurposelol' ? (
+            <img src="/secret-full-logo.png" alt="logo" className="w-32" />
+          ) : isDark ? (
             <img src="/dark-full-logo.png" alt="logo" className="w-32" />
           ) : (
             <img src="/light-full-logo.png" alt="logo" className="w-32" />
