@@ -1,10 +1,12 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const heroRef = useRef(null);
+  const navigate = useNavigate();
+  const hasNavigated = useRef(false);
 
   useGSAP(
     () => {
@@ -28,9 +30,72 @@ const HomePage = () => {
         delay: 1,
         ease: 'power2.out',
       });
+      gsap.from('.scroll-indicator', {
+        opacity: 0,
+        duration: 0.6,
+        delay: 1.4,
+        ease: 'power2.out',
+      });
     },
     { scope: heroRef }
   );
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (e.deltaY > 30 && !hasNavigated.current) {
+        hasNavigated.current = true;
+
+        const tl = gsap.timeline({
+          onComplete: () => navigate('/papers'),
+        });
+
+        // Fade out scroll indicator first
+        tl.to('.scroll-indicator', {
+          opacity: 0,
+          y: 10,
+          duration: 0.2,
+          ease: 'power2.in',
+        });
+
+        // Stagger the main content sliding up and fading
+        tl.to(
+          '.hero-title',
+          {
+            y: -60,
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power3.in',
+          },
+          0.05
+        );
+
+        tl.to(
+          '.hero-subtitle',
+          {
+            y: -40,
+            opacity: 0,
+            duration: 0.45,
+            ease: 'power3.in',
+          },
+          0.15
+        );
+
+        tl.to(
+          '.hero-cta',
+          {
+            y: -30,
+            opacity: 0,
+            duration: 0.4,
+            ease: 'power3.in',
+          },
+          0.25
+        );
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [navigate]);
 
   return (
     <div ref={heroRef} className="home-hero">
@@ -59,6 +124,23 @@ const HomePage = () => {
       <Link to="/papers" className="hero-cta home-hero-cta">
         Browse Papers →
       </Link>
+
+      <div className="scroll-indicator">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M7 13l5 5 5-5" />
+          <path d="M7 6l5 5 5-5" />
+        </svg>
+        <span>Scroll to explore</span>
+      </div>
     </div>
   );
 };

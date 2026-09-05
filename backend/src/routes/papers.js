@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
   if (semester) where.semester = semester;
   if (examType) where.examType = examType;
   if (year) where.year = year;
-  if (batch) where.batch = batch;
+  if (batch) where.batch = { in: [batch, 'ALL'] };
 
   const papers = await prisma.paper.findMany({
     where,
